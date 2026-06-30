@@ -1,0 +1,439 @@
+// js/game.js
+
+/**
+ * Interactive Training Game Controller for Bio-Dobble.
+ */
+class BioDobbleGame {
+  constructor(containerId) {
+    this.container = document.getElementById(containerId);
+    
+    // Game state variables
+    this.score = 0;
+    this.streak = 0;
+    this.maxStreak = 0;
+    this.timeLeft = 60; // 60 seconds time limit
+    this.gameInterval = null;
+    this.gameState = "start"; // start, playing, gameover
+    
+    // Cards state
+    this.currentCardA = null;
+    this.currentCardB = null;
+    this.sharedAminoAcid = null;
+    this.deck = [];
+    
+    // High Score tracking
+    this.highScore = parseInt(localStorage.getItem("bio_dobble_highscore") || "0");
+    
+    // Audio Context (initialized on first interaction)
+    this.audioCtx = null;
+  }
+
+  /**
+   * Initializes the game by rendering the start screen.
+   */
+  init() {
+    this.renderStartScreen();
+  }
+
+  /**
+   * Safe Web Audio API sound generator.
+   */
+  playSound(type) {
+    try {
+      // Lazy-load AudioContext to comply with browser autoplay policies
+      if (!this.audioCtx) {
+        this.audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
+
+      const osc = this.audioCtx.createOscillator();
+      const gain = this.audioCtx.createGain();
+      osc.connect(gain);
+      gain.connect(this.audioCtx.destination);
+
+      const now = this.audioCtx.currentTime;
+
+      if (type === "correct") {
+        // High-pitched double chime
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(523.25, now); // C5
+        osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+        osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+        osc.frequency.setValueAtTime(1046.50, now + 0.24); // C6
+        
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.start(now);
+        osc.stop(now + 0.4);
+      } else if (type === "incorrect") {
+        // Low buzzing downward swoop
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.linearRampToValueAtTime(80, now + 0.3);
+        
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      } else if (type === "gameover") {
+        // Soft arpeggio cascade
+        osc.type = "triangle";
+        const freqs = [349.23, 261.63, 220.00, 174.61]; // F4, C4, A3, F3
+        freqs.forEach((freq, idx) => {
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+        });
+        
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+        osc.start(now);
+        osc.stop(now + 0.65);
+      }
+    } catch (e) {
+      console.warn("Web Audio API not supported or blocked:", e);
+    }
+  }
+
+  /**
+   * Renders the initial start screen layout.
+   */
+  renderStartScreen() {
+    this.gameState = "start";
+    this.container.innerHTML = `
+      <div class="game-start-screen">
+        <div style="font-size: 4rem; margin-bottom: 0.5rem;">🧬</div>
+        <h2>Tréninkový trenažér</h2>
+        <p>Procvičte si poznávání biogenních aminokyselin. Na obrazovce uvidíte dvě karty. Najděte společnou aminokyselinu a klikněte na ni na libovolné z karet!</p>
+        <p><strong>Pravidla:</strong> Za správnou shodu získáváte body a prodlužujete si herní čas (+3s). Za chybu čas ztrácíte (-5s) a přeruší se vám kombo série.</p>
+        
+        <div style="margin: 1rem 0; font-size: 0.95rem;">
+          <strong>Aktuální osobní rekord:</strong> <span style="color: var(--primary); font-weight: 800;">${this.highScore} bodů</span>
+        </div>
+
+        <button class="btn btn-primary" id="btn-start-game">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Spustit trénink
+        </button>
+      </div>
+    `;
+
+    document.getElementById("btn-start-game").addEventListener("click", () => {
+      this.startGame();
+    });
+  }
+
+  /**
+   * Begins the game loop, reset stats and timer.
+   */
+  startGame() {
+    this.gameState = "playing";
+    this.score = 0;
+    this.streak = 0;
+    this.maxStreak = 0;
+    this.timeLeft = 60;
+    
+    // Generate fresh deck
+    const settingsGuaranteeDiff = document.getElementById("set-guarantee-diff-reps").checked;
+    this.deck = generateDobbleDeck(AMINO_ACIDS, settingsGuaranteeDiff);
+    
+    // Draw initial layout
+    this.container.innerHTML = `
+      <div class="game-header">
+        <div class="stat-box">
+          <span class="stat-label">Skóre</span>
+          <span class="stat-value" id="game-score">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Série (Kombo)</span>
+          <span class="stat-value" id="game-streak" style="color: var(--accent);">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Zbývající čas</span>
+          <span class="stat-value" id="game-timer" style="color: var(--danger);">60s</span>
+        </div>
+      </div>
+      
+      <div class="game-arena" id="game-arena">
+        <!-- Cards will be rendered here -->
+      </div>
+      
+      <div class="progress-bar-wrapper">
+        <div class="progress-bar-fill" id="game-progress" style="transform: scaleX(1);"></div>
+      </div>
+    `;
+    
+    this.nextRound();
+    
+    // Start game countdown timer
+    if (this.gameInterval) clearInterval(this.gameInterval);
+    this.gameInterval = setInterval(() => {
+      this.timeLeft -= 0.1;
+      
+      // Update visual timer values
+      const timerVal = Math.max(0, Math.ceil(this.timeLeft));
+      document.getElementById("game-timer").textContent = `${timerVal}s`;
+      
+      // Update progress bar
+      const progressFill = document.getElementById("game-progress");
+      if (progressFill) {
+        progressFill.style.transform = `scaleX(${Math.max(0, this.timeLeft / 60)}`;
+      }
+      
+      if (this.timeLeft <= 0) {
+        this.endGame();
+      }
+    }, 100);
+  }
+
+  /**
+   * Loads two random cards from the deck for the next round.
+   */
+  nextRound() {
+    if (this.gameState !== "playing") return;
+
+    // Pick two random distinct cards
+    const idxA = Math.floor(Math.random() * this.deck.length);
+    let idxB = Math.floor(Math.random() * this.deck.length);
+    while (idxA === idxB) {
+      idxB = Math.floor(Math.random() * this.deck.length);
+    }
+    
+    this.currentCardA = this.deck[idxA];
+    this.currentCardB = this.deck[idxB];
+    
+    // Determine the shared amino acid (should be exactly one)
+    const idsA = this.currentCardA.items.map(item => item.aminoAcid.id);
+    const idsB = this.currentCardB.items.map(item => item.aminoAcid.id);
+    const intersection = idsA.filter(id => idsB.includes(id));
+    this.sharedAminoAcid = intersection[0];
+    
+    // Render the arena cards
+    const arena = document.getElementById("game-arena");
+    arena.innerHTML = `
+      <div class="game-card-wrapper" id="card-wrapper-a">
+        ${this.buildCardHTML(this.currentCardA)}
+      </div>
+      <div class="game-card-wrapper" id="card-wrapper-b">
+        ${this.buildCardHTML(this.currentCardB)}
+      </div>
+    `;
+    
+    // Add event listeners to card items
+    arena.querySelectorAll(".card-item").forEach(itemElement => {
+      itemElement.addEventListener("click", (e) => {
+        const aaId = parseInt(itemElement.getAttribute("data-aa-id"));
+        this.handleItemSelection(aaId, e);
+      });
+    });
+  }
+
+  /**
+   * Helper to build HTML string of a single Dobble card.
+   */
+  buildCardHTML(cardData) {
+    const isSquare = document.getElementById("set-card-shape").value === "square";
+    const rotateEnabled = document.getElementById("set-random-rotation").checked;
+    
+    let itemsHTML = "";
+    
+    // Clean positioning coordinates for 5 items inside a circular card
+    // R = 110px. Center of card is (110, 110).
+    const positions = [
+      { x: 110, y: 110, maxRadius: 36 }, // Center
+      { x: 60, y: 65, maxRadius: 34 },   // Top-Left
+      { x: 160, y: 65, maxRadius: 34 },  // Top-Right
+      { x: 60, y: 155, maxRadius: 34 },  // Bottom-Left
+      { x: 160, y: 155, maxRadius: 34 }  // Bottom-Right
+    ];
+    
+    cardData.items.forEach((item, idx) => {
+      const pos = positions[idx];
+      const aa = item.aminoAcid;
+      const rep = item.repType;
+      
+      // Calculate random rotation and scale if enabled
+      const rotation = rotateEnabled ? Math.floor(Math.random() * 360) : 0;
+      const scale = 0.85 + Math.random() * 0.3; // between 0.85 and 1.15
+      
+      // Select content based on representation type
+      let content = "";
+      let classes = "card-item";
+      
+      if (rep === 0) { // Czech Name
+        content = `<span class="item-text" style="font-size: ${Math.floor(13 * scale)}px;">${aa.name}</span>`;
+      } else if (rep === 1) { // English Name
+        content = `<span class="item-text" style="font-size: ${Math.floor(12 * scale)}px; font-style: italic; color: #4a5568;">${aa.engName}</span>`;
+      } else if (rep === 2) { // 3-letter Code
+        content = `<span class="item-text" style="font-size: ${Math.floor(18 * scale)}px; color: var(--primary);">${aa.code3}</span>`;
+      } else if (rep === 3) { // 1-letter Code
+        content = `<span class="item-text" style="font-size: ${Math.floor(26 * scale)}px; color: var(--accent);">${aa.code1}</span>`;
+      } else { // Chemical Structure
+        classes += " item-structure";
+        const svgW = Math.floor(pos.maxRadius * 2 * scale);
+        const svgH = Math.floor(pos.maxRadius * 2 * scale);
+        content = renderStructureToSVG(aa.structure, svgW, svgH);
+      }
+      
+      // Position element absolutely centered on its coordinate slot
+      itemsHTML += `
+        <div class="${classes}" 
+             data-aa-id="${aa.id}" 
+             style="left: ${pos.x}px; top: ${pos.y}px; transform: translate(-50%, -50%) rotate(${rotation}deg);">
+          ${content}
+        </div>
+      `;
+    });
+    
+    return `
+      <div class="dobble-card ${isSquare ? 'square' : ''}">
+        ${itemsHTML}
+      </div>
+    `;
+  }
+
+  /**
+   * Action handler when player clicks on a symbol.
+   */
+  handleItemSelection(clickedAaId, event) {
+    if (this.gameState !== "playing") return;
+    
+    const correct = (clickedAaId === this.sharedAminoAcid);
+    
+    if (correct) {
+      this.playSound("correct");
+      this.createParticles(event.clientX, event.clientY);
+      
+      // Award score and streak
+      this.streak++;
+      if (this.streak > this.maxStreak) this.maxStreak = this.streak;
+      
+      // Dynamic point scoring based on streak multiplier
+      const pointsEarned = 10 + Math.floor(this.streak / 3) * 5;
+      this.score += pointsEarned;
+      
+      // Award extra time (max time cap 90s)
+      this.timeLeft = Math.min(90, this.timeLeft + 3);
+      
+      // Flash correct visual feedback
+      const wrappers = document.querySelectorAll(".game-card-wrapper");
+      wrappers.forEach(w => {
+        w.querySelector(".dobble-card").classList.add("correct-flash");
+      });
+      
+      // Render updates to stats
+      document.getElementById("game-score").textContent = this.score;
+      document.getElementById("game-streak").textContent = this.streak;
+      
+      // Queue next round
+      setTimeout(() => {
+        this.nextRound();
+      }, 350);
+    } else {
+      this.playSound("incorrect");
+      
+      // Deduct time penalty
+      this.timeLeft = Math.max(0, this.timeLeft - 5);
+      
+      // Break streak
+      this.streak = 0;
+      
+      document.getElementById("game-streak").textContent = this.streak;
+      
+      // Screen shake card feedback
+      const wrappers = document.querySelectorAll(".game-card-wrapper");
+      wrappers.forEach(w => {
+        const card = w.querySelector(".dobble-card");
+        card.classList.add("shake-animation");
+        // Remove animation class after finish
+        setTimeout(() => {
+          card.classList.remove("shake-animation");
+        }, 400);
+      });
+    }
+  }
+
+  /**
+   * Dynamic visual particle explosion.
+   */
+  createParticles(x, y) {
+    const particleCount = 20;
+    const colors = ["#4f46e5", "#06b6d4", "#10b981", "#fbbf24", "#f43f5e"];
+    
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement("div");
+      particle.className = "match-particle";
+      
+      // Random direction vectors
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 50 + Math.random() * 80;
+      const tx = Math.cos(angle) * velocity;
+      const ty = Math.sin(angle) * velocity;
+      
+      // Style particles
+      const size = 5 + Math.random() * 10;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.left = `${x - size/2}px`;
+      particle.style.top = `${y - size/2}px`;
+      
+      // Absolute viewport positioning for float overlays
+      particle.style.position = "fixed";
+      particle.style.zIndex = "9999";
+      
+      particle.style.setProperty("--tx", `${tx}px`);
+      particle.style.setProperty("--ty", `${ty}px`);
+      
+      document.body.appendChild(particle);
+      
+      // Garbage collect particle after animation completes
+      setTimeout(() => {
+        particle.remove();
+      }, 600);
+    }
+  }
+
+  /**
+   * Concludes the game, updates highscores.
+   */
+  endGame() {
+    this.gameState = "gameover";
+    if (this.gameInterval) clearInterval(this.gameInterval);
+    
+    this.playSound("gameover");
+    
+    // Check for highscore achievements
+    let newRecord = false;
+    if (this.score > this.highScore) {
+      this.highScore = this.score;
+      localStorage.setItem("bio_dobble_highscore", this.highScore);
+      newRecord = true;
+    }
+    
+    this.container.innerHTML = `
+      <div class="game-over-screen">
+        <div style="font-size: 4rem; margin-bottom: 0.5rem;">🏆</div>
+        <h2>Konec hry!</h2>
+        
+        ${newRecord ? `<div class="high-score-announcement">🎉 NOVÝ OSOBNÍ REKORD! 🎉</div>` : ""}
+        
+        <div style="margin: 1.5rem 0; text-align: left; display: flex; flex-direction: column; gap: 0.75rem;">
+          <p>Dosáhli jste celkového skóre: <strong style="color: var(--primary); font-size: 1.3rem;">${this.score} bodů</strong></p>
+          <p>Nejdelší řada bez chyby: <strong style="color: var(--accent); font-size: 1.2rem;">${this.maxStreak} správně v řadě</strong></p>
+          <p>Osobní rekord: <strong>${this.highScore} bodů</strong></p>
+        </div>
+
+        <button class="btn btn-primary" id="btn-restart-game">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path></svg>
+          Hrát znovu
+        </button>
+      </div>
+    `;
+    
+    document.getElementById("btn-restart-game").addEventListener("click", () => {
+      this.startGame();
+    });
+  }
+}
