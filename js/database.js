@@ -14,6 +14,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Hydrofobní (alifatická)",
     formula: "C3H7NO2",
+    condensed: "CH₃CH(NH₂)COOH",
     desc: "Jednoduchá alifatická aminokyselina s methylovou skupinou. Je jednou z nejčastějších aminokyselin v proteinech.",
     structure: {
       atoms: [
@@ -42,6 +43,7 @@ const AMINO_ACIDS = [
     group: "basic",
     groupCz: "Zásaditá (kladně nabitá)",
     formula: "C6H14N4O2",
+    condensed: "HN=C(NH₂)NH(CH₂)₃CH(NH₂)COOH",
     desc: "Aminokyselina s dlouhým postranním řetězcem zakončeným silně bazickou guanidinovou skupinou.",
     structure: {
       atoms: [
@@ -83,6 +85,7 @@ const AMINO_ACIDS = [
     group: "polar",
     groupCz: "Polární (nenabitá)",
     formula: "C4H8N2O3",
+    condensed: "H₂NCOCH₂CH(NH₂)COOH",
     desc: "Polární aminokyselina s karboxamidovou skupinou v postranním řetězci. První izolovaná aminokyselina (z chřestu).",
     structure: {
       atoms: [
@@ -118,6 +121,7 @@ const AMINO_ACIDS = [
     group: "acidic",
     groupCz: "Kyselá (záporně nabitá)",
     formula: "C4H7NO4",
+    condensed: "HOOCCH₂CH(NH₂)COOH",
     desc: "Kyselá aminokyselina (kyselina asparagová), která nese při fyziologickém pH záporný náboj.",
     structure: {
       atoms: [
@@ -153,6 +157,7 @@ const AMINO_ACIDS = [
     group: "polar",
     groupCz: "Polární (obsahující síru)",
     formula: "C3H7NO2S",
+    condensed: "HSCH₂CH(NH₂)COOH",
     desc: "Polární aminokyselina obsahující reaktivní sulfhydrylovou (-SH) skupinu, která tvoří disulfidické můstky.",
     structure: {
       atoms: [
@@ -184,6 +189,7 @@ const AMINO_ACIDS = [
     group: "polar",
     groupCz: "Polární (nenabitá)",
     formula: "C5H10N2O3",
+    condensed: "H₂NCO(CH₂)₂CH(NH₂)COOH",
     desc: "Nejhojnější volná aminokyselina v těle. Slouží k bezpečnému transportu amoniaku krví.",
     structure: {
       atoms: [
@@ -221,6 +227,7 @@ const AMINO_ACIDS = [
     group: "acidic",
     groupCz: "Kyselá (záporně nabitá)",
     formula: "C5H9NO4",
+    condensed: "HOOC(CH₂)₂CH(NH₂)COOH",
     desc: "Kyselá aminokyselina (kyselina glutamová). V mozku působí jako hlavní excitační neurotransmiter.",
     structure: {
       atoms: [
@@ -258,6 +265,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Nejjednodušší (achirální)",
     formula: "C2H5NO2",
+    condensed: "H₂NCH₂COOH",
     desc: "Nejmenší a nejjednodušší aminokyselina. Jako jediná nemá asymetrický uhlík (je achirální).",
     structure: {
       atoms: [
@@ -286,6 +294,7 @@ const AMINO_ACIDS = [
     group: "basic",
     groupCz: "Zásaditá (aromatická)",
     formula: "C6H9N3O2",
+    condensed: "C₃H₃N₂CH₂CH(NH₂)COOH",
     desc: "Aminokyselina s imidazolovým kruhem. Její pKa je blízké fyziologickému pH (často v aktivních místech enzymů).",
     structure: {
       atoms: [
@@ -326,6 +335,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Hydrofobní (alifatická)",
     formula: "C6H13NO2",
+    condensed: "CH₃CH₂CH(CH₃)CH(NH₂)COOH",
     desc: "Esenciální aminokyselina s rozvětveným řetězcem (BCAA). Je izomerem leucinu s asymetrickým Cβ.",
     structure: {
       atoms: [
@@ -361,6 +371,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Hydrofobní (alifatická)",
     formula: "C6H13NO2",
+    condensed: "(CH₃)₂CHCH₂CH(NH₂)COOH",
     desc: "Esenciální rozvětvená aminokyselina (BCAA). Slouží jako klíčový signální stimulátor syntézy svalových proteinů (mTOR).",
     structure: {
       atoms: [
@@ -396,6 +407,7 @@ const AMINO_ACIDS = [
     group: "basic",
     groupCz: "Zásaditá (kladně nabitá)",
     formula: "C6H14N2O2",
+    condensed: "H₂N(CH₂)₄CH(NH₂)COOH",
     desc: "Esenciální aminokyselina s dlouhým alifatickým řetězcem zakončeným primární amino skupinou.",
     structure: {
       atoms: [
@@ -433,6 +445,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Hydrofobní (obsahující síru)",
     formula: "C5H11NO2S",
+    condensed: "CH₃S(CH₂)₂CH(NH₂)COOH",
     desc: "Esenciální aminokyselina. Slouží jako startovní aminokyselina při syntéze proteinů (kodón AUG).",
     structure: {
       atoms: [
@@ -468,6 +481,7 @@ const AMINO_ACIDS = [
     group: "aromatic",
     groupCz: "Aromatická (nepolární)",
     formula: "C9H11NO2",
+    condensed: "C₆H₅CH₂CH(NH₂)COOH",
     desc: "Esenciální aminokyselina s benzenovým kruhem. Je prekurzorem tyrosinu a katecholaminů.",
     structure: {
       atoms: [
@@ -510,6 +524,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Cyklická iminokyselina",
     formula: "C5H9NO2",
+    condensed: "C₄H₇NHCOOH",
     desc: "Sekundární aminokyselina (iminokyselina). Její cyklická struktura způsobuje 'zalomení' v alfa-helixech proteinů.",
     structure: {
       atoms: [
@@ -544,6 +559,7 @@ const AMINO_ACIDS = [
     group: "polar",
     groupCz: "Polární (s hydroxylovou sk.)",
     formula: "C3H7NO3",
+    condensed: "HOCH₂CH(NH₂)COOH",
     desc: "Polární aminokyselina s hydroxylovou skupinou. Je často modifikována fosforylací v buněčné signalizaci.",
     structure: {
       atoms: [
@@ -575,6 +591,7 @@ const AMINO_ACIDS = [
     group: "polar",
     groupCz: "Polární (s hydroxylovou sk.)",
     formula: "C4H9NO3",
+    condensed: "CH₃CH(OH)CH(NH₂)COOH",
     desc: "Esenciální polární aminokyselina se dvěma chirálními centry. Cílové místo pro O-glykosylaci proteinů.",
     structure: {
       atoms: [
@@ -608,6 +625,7 @@ const AMINO_ACIDS = [
     group: "aromatic",
     groupCz: "Aromatická (prekurzor hormonů)",
     formula: "C11H12N2O2",
+    condensed: "C₈H₆NCH₂CH(NH₂)COOH",
     desc: "Největší aminokyselina s dvojitým indolovým kruhem. Je esenciální a slouží jako prekurzor serotoninu a melatoninu.",
     structure: {
       atoms: [
@@ -659,6 +677,7 @@ const AMINO_ACIDS = [
     group: "aromatic",
     groupCz: "Aromatická (polární)",
     formula: "C9H11NO3",
+    condensed: "HOC₆H₄CH₂CH(NH₂)COOH",
     desc: "Aromatická aminokyselina s fenolovou skupinou. Je klíčová pro syntézu hormonů štítné žlázy a neurotransmiteru dopaminu.",
     structure: {
       atoms: [
@@ -705,6 +724,7 @@ const AMINO_ACIDS = [
     group: "hydrophobic",
     groupCz: "Hydrofobní (alifatická)",
     formula: "C5H11NO2",
+    condensed: "(CH₃)₂CHCH(NH₂)COOH",
     desc: "Esenciální aminokyselina s rozvětveným isopropylovým řetězcem (BCAA). Důležitá pro regeneraci tkání.",
     structure: {
       atoms: [
@@ -738,6 +758,7 @@ const AMINO_ACIDS = [
     group: "polar",
     groupCz: "Polární (21. aminokyselina)",
     formula: "C3H7NO2Se",
+    condensed: "HSeCH₂CH(NH₂)COOH",
     desc: "Obsahuje selen místo síry (selenolová skupina). Je kódována stop-kodónem UGA za přítomnosti specifického SECIS elementu mRNA.",
     structure: {
       atoms: [

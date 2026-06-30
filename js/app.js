@@ -1,26 +1,101 @@
 // js/app.js
 
-/**
- * Entry point and UI Controller for Bio-Dobble.
- */
+// Global state for active language
+window.currentLang = localStorage.getItem("aa_dobble_lang") || "cs";
+
+// Translation dictionary for DOM elements
+const TRANSLATIONS = {
+  cs: {
+    tab_home: "Úvod",
+    tab_encyclopedia: "Encyklopedie",
+    tab_game: "Tréninková Hra",
+    tab_generator: "Generátor Karet",
+    hero_title: "AA-Dobble s aminokyselinami",
+    hero_desc: "Vítejte v interaktivním generátoru a výukovém trenažéru hry Dobble. Tato verze je unikátní tím, že nehledáte identické obrázky, ale spojujete <strong>významy</strong>: strukturní vzorce, české názvy, anglické názvy, 3-písmenné a 1-písmenné zkratky všech 21 biogenních aminokyselin.",
+    hero_btn_play: "Hrát Hru",
+    hero_btn_print: "Tisknout Karty",
+    how_title: "Jak hra funguje?",
+    feat_math_title: "Matematická dokonalost",
+    feat_math_desc: "Díky použití projektivní roviny řádu 4 obsahuje balíček přesně 21 karet a 21 aminokyselin. Libovolné dvě karty sdílejí <strong>přesně jednu</strong> společnou aminokyselinu.",
+    feat_meaning_title: "Párování podle významu",
+    feat_meaning_desc: "Společný prvek na kartách má vždy odlišný formát (napárováno např. strukturní vzorec na jedné kartě a jednopísmenný kód na druhé). Nemůžete se spolehnout na vizuální shodu, musíte znát chemii!",
+    feat_print_title: "Tiskový export",
+    feat_print_desc: "Nastavte si tvar karet (kulaté / čtvercové), rotaci prvků, tiskové ořezové značky a vytiskněte si hotovou karetní sadu na papír formátu A4.",
+    search_placeholder: "Hledat podle názvu, vzorce nebo zkratky...",
+    filter_all: "Všechny",
+    filter_hydrophobic: "Hydrofobní",
+    filter_polar: "Polární",
+    filter_basic: "Zásadité",
+    filter_acidic: "Kyselé",
+    filter_aromatic: "Aromatické",
+    print_settings_title: "Nastavení tiskovin",
+    card_shape_label: "Tvar karet",
+    shape_circle: "Kulaté (Tradiční Dobble)",
+    shape_square: "Čtvercové (Snazší stříhání)",
+    rotate_symbols_label: "Náhodně otáčet symboly",
+    rotate_symbols_sub: "Zvyšuje obtížnost tím, že otáčí zkratky a strukturní vzorce.",
+    guarantee_diff_label: "Vždy odlišné reprezentace",
+    guarantee_diff_sub: "Zaručí, že společná aminokyselina má na obou kartách jinou formu (např. text vs vzorec).",
+    show_cheat_label: "Zobrazit tahák (řešení)",
+    show_cheat_sub: "Vytiskne drobným písmem seznam aminokyselin do rohu každé karty pro kontrolu.",
+    btn_print: "Tisknout sadu karet",
+    preview_title: "Náhled karet (21 karet celkem)",
+    btn_regenerate: "Přegenerovat sady",
+    footer_text: "<p>&copy; 2026 AA-Dobble Generator. Vytvořeno pro výuku biochemie a biogenních aminokyselin.</p>"
+  },
+  en: {
+    tab_home: "Home",
+    tab_encyclopedia: "Encyclopedia",
+    tab_game: "Training Game",
+    tab_generator: "Card Generator",
+    hero_title: "AA-Dobble with Amino Acids",
+    hero_desc: "Welcome to the interactive card generator and training deck simulator for Dobble. This unique variant matches symbols by <strong>meaning</strong>: skeletal structures, English names, Czech names, 3-letter, and 1-letter codes of the 21 proteinogenic amino acids.",
+    hero_btn_play: "Play Game",
+    hero_btn_print: "Print Cards",
+    how_title: "How it works?",
+    feat_math_title: "Mathematical Perfection",
+    feat_math_desc: "Using a projective plane of order 4, the deck contains exactly 21 cards and 21 amino acids. Any two cards share <strong>exactly one</strong> matching amino acid.",
+    feat_meaning_title: "Semantic Match (Meaning)",
+    feat_meaning_desc: "The matching amino acid between two cards is represented in different formats (e.g. skeletal structure vs 1-letter code). You must know their chemical structures to identify the match!",
+    feat_print_title: "Printable PDF Export",
+    feat_print_desc: "Customize card shape (circular / square), random item rotation, layout margins, cheat sheet solutions, and print directly on standard A4 paper.",
+    search_placeholder: "Search by name, formula, or code...",
+    filter_all: "All",
+    filter_hydrophobic: "Hydrophobic",
+    filter_polar: "Polar",
+    filter_basic: "Basic",
+    filter_acidic: "Acidic",
+    filter_aromatic: "Aromatic",
+    print_settings_title: "Print Settings",
+    card_shape_label: "Card Shape",
+    shape_circle: "Circular (Classic Dobble)",
+    shape_square: "Square (Easier to cut)",
+    rotate_symbols_label: "Randomly rotate symbols",
+    rotate_symbols_sub: "Increases difficulty by rotating texts and structural formulas.",
+    guarantee_diff_label: "Always different representations",
+    guarantee_diff_sub: "Guarantees that the matching amino acid has different forms on the two cards (e.g., text vs structure).",
+    show_cheat_label: "Show cheat sheet (solutions)",
+    show_cheat_sub: "Prints the list of amino acids in a tiny font in the corner of each card for validation.",
+    btn_print: "Print Card Deck",
+    preview_title: "Card Preview (21 cards total)",
+    btn_regenerate: "Regenerate Decks",
+    footer_text: "<p>&copy; 2026 AA-Dobble Generator. Designed for teaching biochemistry and proteinogenic amino acids.</p>"
+  }
+};
+
+let activeGameInstance = null;
+
 document.addEventListener("DOMContentLoaded", () => {
-  // Initialize Themes
   initTheme();
-  
-  // Initialize Tabs
   initTabs();
-  
-  // Initialize Encyclopedia Search & Filters
+  initLanguage();
   initEncyclopedia();
-  
-  // Initialize Card Generator
   initGenerator();
   
-  // Initialize Game Instance
-  const game = new BioDobbleGame("game-container");
-  game.init();
+  // Create game instance
+  activeGameInstance = new window.AADobbleGame("game-container");
+  activeGameInstance.init();
   
-  // Render hero landing visualization cards
   renderHeroCards();
 });
 
@@ -28,8 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initTheme() {
   const themeToggle = document.getElementById("theme-toggle");
   
-  // Load saved theme or default to system preference
-  const savedTheme = localStorage.getItem("bio_dobble_theme");
+  const savedTheme = localStorage.getItem("aa_dobble_theme");
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
   const initialTheme = savedTheme || (prefersDark ? "dark" : "light");
   
@@ -41,7 +115,7 @@ function initTheme() {
     const newTheme = currentTheme === "dark" ? "light" : "dark";
     
     document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("bio_dobble_theme", newTheme);
+    localStorage.setItem("aa_dobble_theme", newTheme);
     updateThemeIcon(newTheme);
   });
 }
@@ -49,39 +123,99 @@ function initTheme() {
 function updateThemeIcon(theme) {
   const toggleBtn = document.getElementById("theme-toggle");
   if (theme === "dark") {
-    // Moon Icon
     toggleBtn.innerHTML = `
       <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
     `;
   } else {
-    // Sun Icon
     toggleBtn.innerHTML = `
       <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
     `;
   }
 }
 
+/* --- Localization Management --- */
+function initLanguage() {
+  const langToggle = document.getElementById("lang-toggle");
+  
+  // Set initial button text and translate page
+  langToggle.textContent = window.currentLang === "cs" ? "EN" : "CZ";
+  translatePage();
+  
+  langToggle.addEventListener("click", () => {
+    window.currentLang = window.currentLang === "cs" ? "en" : "cs";
+    localStorage.setItem("aa_dobble_lang", window.currentLang);
+    langToggle.textContent = window.currentLang === "cs" ? "EN" : "CZ";
+    
+    // Update translations
+    translatePage();
+    
+    // Refresh Encyclopedia and Generator if active
+    const searchInput = document.getElementById("ref-search");
+    const activeFilter = document.querySelector("#ref-filters .filter-btn.active").getAttribute("data-filter");
+    renderEncyclopedia(activeFilter, searchInput.value.toLowerCase().trim());
+    
+    if (document.getElementById("generator-tab").classList.contains("active")) {
+      renderGeneratorPreview(false); // redraw visually
+    }
+    
+    // Update active game start screen or state
+    if (activeGameInstance) {
+      if (activeGameInstance.gameState !== "playing") {
+        activeGameInstance.renderStartScreen();
+      } else {
+        // Redraw current cards in active game to update language texts immediately
+        activeGameInstance.nextRound();
+      }
+    }
+    
+    // Redraw hero showcase
+    renderHeroCards();
+  });
+}
+
+function translatePage() {
+  const lang = window.currentLang;
+  
+  // Translate search input placeholder
+  const searchInput = document.getElementById("ref-search");
+  if (searchInput) {
+    searchInput.placeholder = TRANSLATIONS[lang].search_placeholder;
+  }
+  
+  // Translate other elements with data-translate attribute
+  document.querySelectorAll("[data-translate]").forEach(el => {
+    const key = el.getAttribute("data-translate");
+    if (TRANSLATIONS[lang][key]) {
+      // Keep SVG icon markup inside tab buttons during translation
+      if (el.classList.contains("tab-btn") || el.classList.contains("btn")) {
+        const svg = el.querySelector("svg");
+        el.innerHTML = "";
+        if (svg) el.appendChild(svg.cloneNode(true));
+        el.appendChild(document.createTextNode(" " + TRANSLATIONS[lang][key]));
+      } else {
+        el.innerHTML = TRANSLATIONS[lang][key];
+      }
+    }
+  });
+}
+
 /* --- Tab System --- */
 function initTabs() {
   window.switchTab = function(tabId) {
-    // Deactivate all tabs
     document.querySelectorAll(".tab-btn").forEach(btn => btn.classList.remove("active"));
     document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
     
-    // Activate clicked tab
     const activeBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
     if (activeBtn) activeBtn.classList.add("active");
     
     const activeContent = document.getElementById(tabId);
     if (activeContent) activeContent.classList.add("active");
     
-    // Custom triggers on tab change
     if (tabId === "generator-tab") {
       renderGeneratorPreview();
     }
   };
   
-  // Attach listeners to navigation buttons
   document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const tabId = btn.getAttribute("data-tab");
@@ -95,17 +229,14 @@ function initEncyclopedia() {
   const searchInput = document.getElementById("ref-search");
   const filterBtns = document.querySelectorAll("#ref-filters .filter-btn");
   
-  // Initial Render
   renderEncyclopedia("all", "");
   
-  // Search Input Listener
   searchInput.addEventListener("input", (e) => {
     const query = e.target.value.toLowerCase().trim();
     const activeFilter = document.querySelector("#ref-filters .filter-btn.active").getAttribute("data-filter");
     renderEncyclopedia(activeFilter, query);
   });
   
-  // Filter Button Listeners
   filterBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       filterBtns.forEach(b => b.classList.remove("active"));
@@ -120,10 +251,11 @@ function initEncyclopedia() {
 
 function renderEncyclopedia(filter, query) {
   const grid = document.getElementById("ref-grid");
+  if (!grid) return;
   grid.innerHTML = "";
+  const lang = window.currentLang;
   
   const filtered = AMINO_ACIDS.filter(aa => {
-    // 1. Group Filter
     if (filter !== "all" && aa.group !== filter) {
       if (filter === "aromatic" && aa.groupCz.indexOf("aromatická") === -1) {
         return false;
@@ -131,14 +263,14 @@ function renderEncyclopedia(filter, query) {
       if (filter !== "aromatic") return false;
     }
     
-    // 2. Query Text Search
     if (query) {
       return (
         aa.name.toLowerCase().includes(query) ||
         aa.engName.toLowerCase().includes(query) ||
         aa.code3.toLowerCase().includes(query) ||
         aa.code1.toLowerCase().includes(query) ||
-        aa.formula.toLowerCase().includes(query)
+        aa.formula.toLowerCase().includes(query) ||
+        aa.condensed.toLowerCase().includes(query)
       );
     }
     
@@ -146,10 +278,12 @@ function renderEncyclopedia(filter, query) {
   });
   
   if (filtered.length === 0) {
+    const noResultsText = lang === "cs" 
+      ? `Nebuly nalezeny žádné aminokyseliny. Zkuste upravit vyhledávací výraz.` 
+      : `No amino acids found. Try refining your search.`;
     grid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
-        <p style="font-size: 1.1rem; font-weight: 600;">Nebyly nalezeny žádné aminokyseliny.</p>
-        <p style="font-size: 0.9rem; margin-top: 5px;">Zkuste upravit vyhledávací výraz nebo změnit filtr.</p>
+        <p style="font-size: 1.1rem; font-weight: 600;">${noResultsText}</p>
       </div>
     `;
     return;
@@ -160,14 +294,24 @@ function renderEncyclopedia(filter, query) {
     card.className = "aa-card";
     
     const badgeClass = `badge-${aa.group}`;
+    const badgeLabel = lang === "cs" 
+      ? aa.groupCz.split(" ")[0] 
+      : aa.group.charAt(0).toUpperCase() + aa.group.slice(1);
+    
+    const descText = lang === "cs" 
+      ? aa.desc 
+      : `Essential amino acid in biochemical processes. Formula: ${aa.formula}. Side chain features ${aa.group} properties.`;
+    
+    // Subscripts for condensed formula rendering
+    const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
     
     card.innerHTML = `
       <div class="aa-header">
         <div class="aa-title">
-          <span class="aa-cz-name">${aa.name}</span>
-          <span class="aa-eng-name">${aa.engName}</span>
+          <span class="aa-cz-name">${lang === "cs" ? aa.name : aa.engName}</span>
+          <span class="aa-eng-name">${lang === "cs" ? aa.engName : aa.name}</span>
         </div>
-        <span class="aa-badge ${badgeClass}">${aa.groupCz.split(" ")[0]}</span>
+        <span class="aa-badge ${badgeClass}">${badgeLabel}</span>
       </div>
       
       <div class="aa-codes">
@@ -179,11 +323,12 @@ function renderEncyclopedia(filter, query) {
         ${renderStructureToSVG(aa.structure, 120, 120)}
       </div>
       
-      <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span class="aa-formula" style="font-weight: 700; color: var(--primary);">${formattedFormula}</span>
         <span class="aa-formula">${aa.formula.replace(/(\d+)/g, "<sub>$1</sub>")}</span>
       </div>
       
-      <p class="aa-desc">${aa.desc}</p>
+      <p class="aa-desc">${descText}</p>
     `;
     
     grid.appendChild(card);
@@ -197,35 +342,35 @@ function initGenerator() {
   const regenerateBtn = document.getElementById("btn-regenerate-deck");
   const printBtn = document.getElementById("btn-print-deck");
   
-  // Settings controllers
   const shapeSelect = document.getElementById("set-card-shape");
   const rotationCheckbox = document.getElementById("set-random-rotation");
   const diffRepsCheckbox = document.getElementById("set-guarantee-diff-reps");
   const helpersCheckbox = document.getElementById("set-show-helpers");
   
-  regenerateBtn.addEventListener("click", () => {
-    renderGeneratorPreview();
-  });
+  if (regenerateBtn) {
+    regenerateBtn.addEventListener("click", () => {
+      renderGeneratorPreview(true);
+    });
+  }
   
-  // Redraw preview instantly when visual-only settings change
-  shapeSelect.addEventListener("change", () => renderGeneratorPreview(false));
-  rotationCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
-  helpersCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
+  if (shapeSelect) shapeSelect.addEventListener("change", () => renderGeneratorPreview(false));
+  if (rotationCheckbox) rotationCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
+  if (helpersCheckbox) helpersCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
+  if (diffRepsCheckbox) diffRepsCheckbox.addEventListener("change", () => renderGeneratorPreview(true));
   
-  // Regenerate math mapping when logic setting changes
-  diffRepsCheckbox.addEventListener("change", () => renderGeneratorPreview(true));
-  
-  printBtn.addEventListener("click", () => {
-    window.print();
-  });
+  if (printBtn) {
+    printBtn.addEventListener("click", () => {
+      window.print();
+    });
+  }
 }
 
 /**
  * Renders the preview deck inside the generator tab.
- * @param {boolean} recomputeMath If true, fully rebuilds Dobble assignments. Otherwise, just updates CSS/visual positions.
  */
 function renderGeneratorPreview(recomputeMath = true) {
   const grid = document.getElementById("generator-cards-grid");
+  if (!grid) return;
   
   if (recomputeMath || generatedDeck.length === 0) {
     const guaranteeDiff = document.getElementById("set-guarantee-diff-reps").checked;
@@ -237,8 +382,8 @@ function renderGeneratorPreview(recomputeMath = true) {
   const isSquare = document.getElementById("set-card-shape").value === "square";
   const rotateEnabled = document.getElementById("set-random-rotation").checked;
   const showHelpers = document.getElementById("set-show-helpers").checked;
+  const lang = window.currentLang;
   
-  // Position offsets for 5 elements (identical to game view setup)
   const positions = [
     { x: 110, y: 110, sizeFactor: 1 },    // Center
     { x: 65, y: 65, sizeFactor: 0.9 },     // Top-Left
@@ -265,9 +410,15 @@ function renderGeneratorPreview(recomputeMath = true) {
       let classes = "card-item";
       
       if (rep === 0) {
-        content = `<span class="item-text" style="font-size: ${Math.floor(13 * scale)}px;">${aa.name}</span>`;
+        const displayName = lang === "cs" ? aa.name : aa.engName;
+        content = `<span class="item-text" style="font-size: ${Math.floor(13 * scale)}px;">${displayName}</span>`;
       } else if (rep === 1) {
-        content = `<span class="item-text" style="font-size: ${Math.floor(12 * scale)}px; font-style: italic; color: #4a5568;">${aa.engName}</span>`;
+        if (lang === "cs") {
+          content = `<span class="item-text" style="font-size: ${Math.floor(12 * scale)}px; font-style: italic; color: #4a5568;">${aa.engName}</span>`;
+        } else {
+          const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
+          content = `<span class="item-text" style="font-size: ${Math.floor(11 * scale)}px; font-family: monospace; font-weight: 700; color: #4a5568;">${formattedFormula}</span>`;
+        }
       } else if (rep === 2) {
         content = `<span class="item-text" style="font-size: ${Math.floor(18 * scale)}px; color: var(--primary);">${aa.code3}</span>`;
       } else if (rep === 3) {
@@ -285,10 +436,9 @@ function renderGeneratorPreview(recomputeMath = true) {
       `;
     });
     
-    // Add small card indexing for printable identification
-    itemsHTML += `<span class="card-label">Karta ${idx + 1}</span>`;
+    const cardLabelText = lang === "cs" ? `Karta ${idx + 1}` : `Card ${idx + 1}`;
+    itemsHTML += `<span class="card-label">${cardLabelText}</span>`;
     
-    // Add helper solutions text near bottom rim if checked
     if (showHelpers) {
       const listText = card.items.map(item => item.aminoAcid.code3).join(", ");
       itemsHTML += `
@@ -310,18 +460,12 @@ function renderHeroCards() {
   
   if (!container1 || !container2) return;
   
-  // Grab two random connected cards (e.g. Card 1 and Card 2)
   const tempDeck = generateDobbleDeck(AMINO_ACIDS, true);
   
-  // Force a specific set with a very obvious match for demonstration
-  // Let's use Card 0 and Card 16 which overlap at amino acid:
-  // Card 1: [16, 17, 18, 19, 20]
-  // Card 17: [0, 1, 2, 3, 20]
-  // Intersection is 20 (Selenocysteine)
   const cardA = tempDeck[0];
   const cardB = tempDeck[16];
+  const lang = window.currentLang;
   
-  // Custom builder mapping to draw small static preview cards (160x160px size)
   const positions = [
     { x: 80, y: 80 },
     { x: 45, y: 45 },
@@ -338,13 +482,24 @@ function renderHeroCards() {
       const rep = item.repType;
       
       let content = "";
-      if (rep === 0) content = `<span class="item-text" style="font-size: 10px;">${aa.name}</span>`;
-      else if (rep === 1) content = `<span class="item-text" style="font-size: 9px; font-style: italic;">${aa.engName}</span>`;
-      else if (rep === 2) content = `<span class="item-text" style="font-size: 13px; color: var(--primary);">${aa.code3}</span>`;
-      else if (rep === 3) content = `<span class="item-text" style="font-size: 18px; color: var(--accent);">${aa.code1}</span>`;
-      else content = renderStructureToSVG(aa.structure, 45, 45);
+      if (rep === 0) {
+        const displayName = lang === "cs" ? aa.name : aa.engName;
+        content = `<span class="item-text" style="font-size: 10px;">${displayName}</span>`;
+      } else if (rep === 1) {
+        if (lang === "cs") {
+          content = `<span class="item-text" style="font-size: 9px; font-style: italic;">${aa.engName}</span>`;
+        } else {
+          const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
+          content = `<span class="item-text" style="font-size: 8px; font-family: monospace; font-weight: 700; color: #4a5568;">${formattedFormula}</span>`;
+        }
+      } else if (rep === 2) {
+        content = `<span class="item-text" style="font-size: 13px; color: var(--primary);">${aa.code3}</span>`;
+      } else if (rep === 3) {
+        content = `<span class="item-text" style="font-size: 18px; color: var(--accent);">${aa.code1}</span>`;
+      } else {
+        content = renderStructureToSVG(aa.structure, 45, 45);
+      }
       
-      // Rotate first, third, fifth items slightly for authentic feel
       const rot = (idx * 40) % 360;
       
       html += `
