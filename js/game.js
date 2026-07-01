@@ -288,11 +288,11 @@ class AADobbleGame {
     let itemsHTML = "";
     
     const positions = [
-      { x: 110, y: 110, maxRadius: 36 }, // Center
-      { x: 60, y: 65, maxRadius: 34 },   // Top-Left
-      { x: 160, y: 65, maxRadius: 34 },  // Top-Right
-      { x: 60, y: 155, maxRadius: 34 },  // Bottom-Left
-      { x: 160, y: 155, maxRadius: 34 }  // Bottom-Right
+      { x: 50, y: 50 },  // Center
+      { x: 23, y: 23 },  // Top-Left
+      { x: 77, y: 23 },  // Top-Right
+      { x: 23, y: 77 },  // Bottom-Left
+      { x: 77, y: 77 }   // Bottom-Right
     ];
     
     cardData.items.forEach((item, idx) => {
@@ -301,7 +301,7 @@ class AADobbleGame {
       const rep = item.repType;
       
       const rotation = rotateEnabled ? Math.floor(Math.random() * 360) : 0;
-      const scale = 0.85 + Math.random() * 0.3;
+      const scale = 0.95 + Math.random() * 0.25; // enlarged base scale
       
       let content = "";
       let classes = "card-item";
@@ -309,31 +309,31 @@ class AADobbleGame {
       if (rep === 0) {
         // Czech Name in CZ mode, English Name in EN mode
         const displayName = lang === "cs" ? aa.name : aa.engName;
-        content = `<span class="item-text" style="font-size: ${Math.floor(13 * scale)}px;">${displayName}</span>`;
+        content = `<span class="item-text">${displayName}</span>`;
       } else if (rep === 1) {
         // English Name in CZ mode, Condensed Formula in EN mode
         if (lang === "cs") {
-          content = `<span class="item-text" style="font-size: ${Math.floor(12 * scale)}px; font-style: italic; color: #4a5568;">${aa.engName}</span>`;
+          content = `<span class="item-text item-subtext">${aa.engName}</span>`;
         } else {
-          // Format formula subscripts nicely
           const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
-          content = `<span class="item-text" style="font-size: ${Math.floor(11 * scale)}px; font-family: monospace; font-weight: 700; color: #4a5568;">${formattedFormula}</span>`;
+          content = `<span class="item-condensed">${formattedFormula}</span>`;
         }
       } else if (rep === 2) { // 3-letter Code
-        content = `<span class="item-text" style="font-size: ${Math.floor(18 * scale)}px; color: var(--primary);">${aa.code3}</span>`;
+        content = `<span class="item-code3">${aa.code3}</span>`;
       } else if (rep === 3) { // 1-letter Code
-        content = `<span class="item-text" style="font-size: ${Math.floor(26 * scale)}px; color: var(--accent);">${aa.code1}</span>`;
-      } else { // Chemical Structure
+        content = `<span class="item-code1">${aa.code1}</span>`;
+      } else if (rep === 4) { // Chemical Structure (SVG)
         classes += " item-structure";
-        const svgW = Math.floor(pos.maxRadius * 2 * scale);
-        const svgH = Math.floor(pos.maxRadius * 2 * scale);
-        content = renderStructureToSVG(aa.structure, svgW, svgH);
+        content = renderStructureToSVG(aa.structure, "100%", "100%");
+      } else { // 3D Structure (PNG)
+        classes += " item-structure";
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
       }
       
       itemsHTML += `
         <div class="${classes}" 
              data-aa-id="${aa.id}" 
-             style="left: ${pos.x}px; top: ${pos.y}px; transform: translate(-50%, -50%) rotate(${rotation}deg);">
+             style="--x: ${pos.x}%; --y: ${pos.y}%; --scale: ${scale}; --rot: ${rotation}deg;">
           ${content}
         </div>
       `;

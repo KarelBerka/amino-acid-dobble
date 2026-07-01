@@ -302,7 +302,6 @@ function renderEncyclopedia(filter, query) {
       ? aa.desc 
       : `Essential amino acid in biochemical processes. Formula: ${aa.formula}. Side chain features ${aa.group} properties.`;
     
-    // Subscripts for condensed formula rendering
     const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
     
     card.innerHTML = `
@@ -319,8 +318,13 @@ function renderEncyclopedia(filter, query) {
         <span class="aa-code1">${aa.code1}</span>
       </div>
       
-      <div class="aa-structure-preview">
-        ${renderStructureToSVG(aa.structure, 120, 120)}
+      <div class="aa-structure-container">
+        <div class="aa-structure-preview" title="2D Skeletal Formula">
+          ${renderStructureToSVG(aa.structure, 100, 100)}
+        </div>
+        <div class="aa-structure-preview" title="3D Ball-and-Stick (PyMOL)">
+          <img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D model" onerror="this.style.display='none'">
+        </div>
       </div>
       
       <div style="display: flex; flex-direction: column; gap: 4px;">
@@ -385,11 +389,11 @@ function renderGeneratorPreview(recomputeMath = true) {
   const lang = window.currentLang;
   
   const positions = [
-    { x: 110, y: 110, sizeFactor: 1 },    // Center
-    { x: 65, y: 65, sizeFactor: 0.9 },     // Top-Left
-    { x: 155, y: 65, sizeFactor: 0.9 },    // Top-Right
-    { x: 65, y: 155, sizeFactor: 0.9 },    // Bottom-Left
-    { x: 155, y: 155, sizeFactor: 0.9 }    // Bottom-Right
+    { x: 50, y: 50 },  // Center
+    { x: 23, y: 23 },  // Top-Left
+    { x: 77, y: 23 },  // Top-Right
+    { x: 23, y: 77 },  // Bottom-Left
+    { x: 77, y: 77 }   // Bottom-Right
   ];
 
   generatedDeck.forEach((card, idx) => {
@@ -404,33 +408,35 @@ function renderGeneratorPreview(recomputeMath = true) {
       const rep = item.repType;
       
       const rotation = rotateEnabled ? Math.floor(Math.random() * 360) : 0;
-      const scale = pos.sizeFactor * (0.85 + Math.random() * 0.25);
+      const scale = 0.95 + Math.random() * 0.25; // enlarged scale factor
       
       let content = "";
       let classes = "card-item";
       
       if (rep === 0) {
         const displayName = lang === "cs" ? aa.name : aa.engName;
-        content = `<span class="item-text" style="font-size: ${Math.floor(13 * scale)}px;">${displayName}</span>`;
+        content = `<span class="item-text">${displayName}</span>`;
       } else if (rep === 1) {
         if (lang === "cs") {
-          content = `<span class="item-text" style="font-size: ${Math.floor(12 * scale)}px; font-style: italic; color: #4a5568;">${aa.engName}</span>`;
+          content = `<span class="item-text item-subtext">${aa.engName}</span>`;
         } else {
           const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
-          content = `<span class="item-text" style="font-size: ${Math.floor(11 * scale)}px; font-family: monospace; font-weight: 700; color: #4a5568;">${formattedFormula}</span>`;
+          content = `<span class="item-condensed">${formattedFormula}</span>`;
         }
       } else if (rep === 2) {
-        content = `<span class="item-text" style="font-size: ${Math.floor(18 * scale)}px; color: var(--primary);">${aa.code3}</span>`;
+        content = `<span class="item-code3">${aa.code3}</span>`;
       } else if (rep === 3) {
-        content = `<span class="item-text" style="font-size: ${Math.floor(26 * scale)}px; color: var(--accent);">${aa.code1}</span>`;
+        content = `<span class="item-code1">${aa.code1}</span>`;
+      } else if (rep === 4) {
+        classes += " item-structure";
+        content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else {
         classes += " item-structure";
-        const svgSize = Math.floor(66 * scale);
-        content = renderStructureToSVG(aa.structure, svgSize, svgSize);
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
       }
       
       itemsHTML += `
-        <div class="${classes}" style="left: ${pos.x}px; top: ${pos.y}px; transform: translate(-50%, -50%) rotate(${rotation}deg);">
+        <div class="${classes}" style="--x: ${pos.x}%; --y: ${pos.y}%; --scale: ${scale}; --rot: ${rotation}deg;">
           ${content}
         </div>
       `;
@@ -467,11 +473,11 @@ function renderHeroCards() {
   const lang = window.currentLang;
   
   const positions = [
-    { x: 80, y: 80 },
-    { x: 45, y: 45 },
-    { x: 115, y: 45 },
-    { x: 45, y: 115 },
-    { x: 115, y: 115 }
+    { x: 50, y: 50 },  // Center
+    { x: 23, y: 23 },  // Top-Left
+    { x: 77, y: 23 },  // Top-Right
+    { x: 23, y: 77 },  // Bottom-Left
+    { x: 77, y: 77 }   // Bottom-Right
   ];
   
   const buildHeroCardHTML = (cardData) => {
@@ -482,28 +488,34 @@ function renderHeroCards() {
       const rep = item.repType;
       
       let content = "";
+      let classes = "card-item";
+      
       if (rep === 0) {
         const displayName = lang === "cs" ? aa.name : aa.engName;
-        content = `<span class="item-text" style="font-size: 10px;">${displayName}</span>`;
+        content = `<span class="item-text">${displayName}</span>`;
       } else if (rep === 1) {
         if (lang === "cs") {
-          content = `<span class="item-text" style="font-size: 9px; font-style: italic;">${aa.engName}</span>`;
+          content = `<span class="item-text item-subtext">${aa.engName}</span>`;
         } else {
           const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
-          content = `<span class="item-text" style="font-size: 8px; font-family: monospace; font-weight: 700; color: #4a5568;">${formattedFormula}</span>`;
+          content = `<span class="item-condensed">${formattedFormula}</span>`;
         }
       } else if (rep === 2) {
-        content = `<span class="item-text" style="font-size: 13px; color: var(--primary);">${aa.code3}</span>`;
+        content = `<span class="item-code3">${aa.code3}</span>`;
       } else if (rep === 3) {
-        content = `<span class="item-text" style="font-size: 18px; color: var(--accent);">${aa.code1}</span>`;
+        content = `<span class="item-code1">${aa.code1}</span>`;
+      } else if (rep === 4) {
+        classes += " item-structure";
+        content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else {
-        content = renderStructureToSVG(aa.structure, 45, 45);
+        classes += " item-structure";
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
       }
       
       const rot = (idx * 40) % 360;
       
       html += `
-        <div class="card-item" style="left: ${pos.x}px; top: ${pos.y}px; transform: translate(-50%, -50%) rotate(${rot}deg);">
+        <div class="${classes}" style="--x: ${pos.x}%; --y: ${pos.y}%; --scale: 0.9; --rot: ${rot}deg;">
           ${content}
         </div>
       `;

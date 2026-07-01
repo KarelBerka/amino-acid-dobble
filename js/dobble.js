@@ -150,8 +150,8 @@ function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true) {
     const cardIndices = occurrences[aaIdx]; // Exactly 5 cards
     
     if (guaranteeDifferentReps) {
-      // Assign the 5 representation types uniquely to the 5 cards
-      const reps = [0, 1, 2, 3, 4];
+      // Assign 5 distinct representation types from 6 available to the 5 cards
+      const reps = [0, 1, 2, 3, 4, 5];
       // Shuffle representation types
       for (let i = reps.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -162,9 +162,9 @@ function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true) {
         representationMapping[aaIdx][cardIdx] = reps[idx];
       });
     } else {
-      // Pick random representation types (may overlap)
+      // Pick random representation types (may overlap) from all 6 types
       cardIndices.forEach(cardIdx => {
-        representationMapping[aaIdx][cardIdx] = Math.floor(Math.random() * 5);
+        representationMapping[aaIdx][cardIdx] = Math.floor(Math.random() * 6);
       });
     }
   }
