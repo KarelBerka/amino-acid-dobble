@@ -830,7 +830,8 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
   
   structure.atoms.forEach(atom => {
     // Hide aliphatic carbon labels (CH3, CH2, CH, etc.) to show clean skeletal branches
-    const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(atom.label.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    const cleanLabel = atom.label ? atom.label.replace(/[\u2080-\u2089]/g, m => String.fromCharCode(m.charCodeAt(0) - 0x2080 + 48)) : "";
+    const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(cleanLabel);
     const hasVisibleLabel = atom.label && !isAliphaticCarbon;
     
     // Add extra padding around visible text labels to prevent clipping
@@ -885,7 +886,8 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
 
   // Draw atom labels (text) with white background mask to clean up overlapping bond lines
   structure.atoms.forEach(atom => {
-    const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(atom.label.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    const cleanLabel = atom.label ? atom.label.replace(/[\u2080-\u2089]/g, m => String.fromCharCode(m.charCodeAt(0) - 0x2080 + 48)) : "";
+    const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(cleanLabel);
     if (atom.label && !isAliphaticCarbon) {
       const style = ATOM_STYLES[atom.type] || { color: bondColor, bg: "#FFFFFF", radius: 8 };
       
