@@ -325,9 +325,11 @@ class AADobbleGame {
       } else if (rep === 4) { // Chemical Structure (SVG)
         classes += " item-structure";
         content = renderStructureToSVG(aa.structure, "100%", "100%");
-      } else { // 3D Structure (PNG)
+      } else if (rep === 5) { // 3D Structure (PNG)
         classes += " item-structure";
         content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
+      } else { // SMILES (rep === 6)
+        content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
       
       itemsHTML += `

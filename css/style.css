@@ -772,6 +772,17 @@ main {
   line-height: 1.2;
 }
 
+.item-smiles {
+  font-size: calc(4.8cqi * var(--scale, 1));
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--primary);
+  text-align: center;
+  line-height: 1.1;
+  word-break: break-all;
+  max-width: 90cqi;
+}
+
 .item-structure svg,
 .item-structure img {
   display: block;

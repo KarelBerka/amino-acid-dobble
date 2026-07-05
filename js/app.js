@@ -330,6 +330,7 @@ function renderEncyclopedia(filter, query) {
       <div style="display: flex; flex-direction: column; gap: 4px;">
         <span class="aa-formula" style="font-weight: 700; color: var(--primary);">${formattedFormula}</span>
         <span class="aa-formula">${aa.formula.replace(/(\d+)/g, "<sub>$1</sub>")}</span>
+        <span class="aa-formula" style="font-family: monospace; font-size: 0.8rem; word-break: break-all; color: var(--text-muted);">SMILES: ${aa.smiles}</span>
       </div>
       
       <p class="aa-desc">${descText}</p>
@@ -430,9 +431,11 @@ function renderGeneratorPreview(recomputeMath = true) {
       } else if (rep === 4) {
         classes += " item-structure";
         content = renderStructureToSVG(aa.structure, "100%", "100%");
-      } else {
+      } else if (rep === 5) {
         classes += " item-structure";
         content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
+      } else {
+        content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
       
       itemsHTML += `
@@ -507,9 +510,11 @@ function renderHeroCards() {
       } else if (rep === 4) {
         classes += " item-structure";
         content = renderStructureToSVG(aa.structure, "100%", "100%");
-      } else {
+      } else if (rep === 5) {
         classes += " item-structure";
         content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
+      } else {
+        content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
       
       const rot = (idx * 40) % 360;
