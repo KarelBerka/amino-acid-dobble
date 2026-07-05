@@ -10,15 +10,16 @@ Live demo: **[https://karelberka.github.io/amino-acid-dobble/](https://karelberk
 
 Unlike classic Dobble where players identify identical illustrations, **AA-Dobble** challenges players to match representations by **meaning**. 
 
-For each of the **21 amino acids** in the game, there are **6 different representations**:
+For each of the **21 amino acids** in the game, there are **7 different representations**:
 1. **Czech Name** (e.g., `Alanin` - displayed in Czech mode)
 2. **English Name** (e.g., `Alanine` - or condensed formula in English mode)
 3. **3-letter Code** (e.g., `Ala`, `Gly`, `Val`)
 4. **1-letter Code** (e.g., `A`, `G`, `V`)
 5. **Skeletal Chemical Structure** (crisp, color-coded 2D vector drawings)
 6. **3D Ball-and-Stick Model** (high-quality transparent molecule rendered using PyMOL)
+7. **SMILES String** (Simplified Molecular Input Line Entry System chemical notation)
 
-The deck generator shuffles these representations. For each card containing an amino acid, it assigns 5 distinct representations out of the 6 available. This guarantees that the single matching amino acid between any two cards **always appears in two different formats** (e.g., one card shows the 3D model and the other shows the 1-letter code). This forces players to translate the meaning in their head instead of relying on simple visual matching!
+The deck generator shuffles these representations. For each card containing an amino acid, it assigns 5 distinct representations out of the 7 available. This guarantees that the single matching amino acid between any two cards **always appears in two different formats** (e.g., one card shows the 3D model and the other shows the SMILES string). This forces players to translate the meaning in their head instead of relying on simple visual matching!
 
 ---
 
