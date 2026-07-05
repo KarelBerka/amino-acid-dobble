@@ -36,6 +36,15 @@ const TRANSLATIONS = {
     rotate_symbols_sub: "Zvyšuje obtížnost tím, že otáčí zkratky a strukturní vzorce.",
     guarantee_diff_label: "Vždy odlišné reprezentace",
     guarantee_diff_sub: "Zaručí, že společná aminokyselina má na obou kartách jinou formu (např. text vs vzorec).",
+    active_reps_label: "Aktivní reprezentace na kartách",
+    active_reps_sub: "Zvolte alespoň 1 typ zobrazení. Pokud vyberete méně než 5, typy se mohou opakovat.",
+    rep_name: "Název (podle jazyka)",
+    rep_alt_name: "Alternativní název / Vzorec",
+    rep_code3: "3písmenný kód",
+    rep_code1: "1písmenný kód",
+    rep_structure2d: "2D vzorec",
+    rep_structure3d: "3D model (PyMOL)",
+    rep_smiles: "SMILES řetězec",
     show_cheat_label: "Zobrazit tahák (řešení)",
     show_cheat_sub: "Vytiskne drobným písmem seznam aminokyselin do rohu každé karty pro kontrolu.",
     btn_print: "Tisknout sadu karet",
@@ -74,6 +83,15 @@ const TRANSLATIONS = {
     rotate_symbols_sub: "Increases difficulty by rotating texts and structural formulas.",
     guarantee_diff_label: "Always different representations",
     guarantee_diff_sub: "Guarantees that the matching amino acid has different forms on the two cards (e.g., text vs structure).",
+    active_reps_label: "Active Representations on Cards",
+    active_reps_sub: "Choose at least 1 representation type. Selecting fewer than 5 will cause repetitions on cards.",
+    rep_name: "Name (based on language)",
+    rep_alt_name: "Alternative Name / Formula",
+    rep_code3: "3-letter Code",
+    rep_code1: "1-letter Code",
+    rep_structure2d: "2D Structure",
+    rep_structure3d: "3D Model (PyMOL)",
+    rep_smiles: "SMILES String",
     show_cheat_label: "Show cheat sheet (solutions)",
     show_cheat_sub: "Prints the list of amino acids in a tiny font in the corner of each card for validation.",
     btn_print: "Print Card Deck",
@@ -163,8 +181,8 @@ function initLanguage() {
       if (activeGameInstance.gameState !== "playing") {
         activeGameInstance.renderStartScreen();
       } else {
-        // Redraw current cards in active game to update language texts immediately
-        activeGameInstance.nextRound();
+        // Redraw current cards in active game to update language texts immediately without skipping round
+        activeGameInstance.updateLang();
       }
     }
     
@@ -323,7 +341,7 @@ function renderEncyclopedia(filter, query) {
           ${renderStructureToSVG(aa.structure, 100, 100)}
         </div>
         <div class="aa-structure-preview" title="3D Ball-and-Stick (PyMOL)">
-          <img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D model" onerror="this.style.display='none'">
+          <img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D model" onerror="this.style.display='none'">
         </div>
       </div>
       
@@ -363,6 +381,12 @@ function initGenerator() {
   if (helpersCheckbox) helpersCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
   if (diffRepsCheckbox) diffRepsCheckbox.addEventListener("change", () => renderGeneratorPreview(true));
   
+  document.querySelectorAll(".rep-checkbox").forEach(cb => {
+    cb.addEventListener("change", () => {
+      renderGeneratorPreview(true);
+    });
+  });
+  
   if (printBtn) {
     printBtn.addEventListener("click", () => {
       window.print();
@@ -379,7 +403,18 @@ function renderGeneratorPreview(recomputeMath = true) {
   
   if (recomputeMath || generatedDeck.length === 0) {
     const guaranteeDiff = document.getElementById("set-guarantee-diff-reps").checked;
-    generatedDeck = generateDobbleDeck(AMINO_ACIDS, guaranteeDiff);
+    
+    // Get checked representations
+    const checkedBoxes = document.querySelectorAll(".rep-checkbox:checked");
+    let allowedReps = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+    
+    // Fallback if none are selected
+    if (allowedReps.length === 0) {
+      allowedReps = [0, 1, 2, 3, 4, 5, 6];
+      document.querySelectorAll(".rep-checkbox").forEach(cb => cb.checked = true);
+    }
+    
+    generatedDeck = generateDobbleDeck(AMINO_ACIDS, guaranteeDiff, allowedReps);
   }
   
   grid.innerHTML = "";
@@ -433,7 +468,7 @@ function renderGeneratorPreview(recomputeMath = true) {
         content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else if (rep === 5) {
         classes += " item-structure";
-        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D" onerror="this.style.display='none'">`;
       } else {
         content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
@@ -512,7 +547,7 @@ function renderHeroCards() {
         content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else if (rep === 5) {
         classes += " item-structure";
-        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D" onerror="this.style.display='none'">`;
       } else {
         content = `<span class="item-smiles">${aa.smiles}</span>`;
       }

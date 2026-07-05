@@ -327,7 +327,7 @@ class AADobbleGame {
         content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else if (rep === 5) { // 3D Structure (PNG)
         classes += " item-structure";
-        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${aa.name} 3D" onerror="this.style.display='none'">`;
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D" onerror="this.style.display='none'">`;
       } else { // SMILES (rep === 6)
         content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
@@ -473,6 +473,36 @@ class AADobbleGame {
     document.getElementById("btn-restart-game").addEventListener("click", () => {
       this.startGame();
     });
+  }
+
+  /**
+   * Updates the game interface and redraws cards in-place when language changes.
+   */
+  updateLang() {
+    if (this.gameState === "playing") {
+      const wrapperA = document.getElementById("card-wrapper-a");
+      const wrapperB = document.getElementById("card-wrapper-b");
+      if (wrapperA && wrapperB) {
+        wrapperA.innerHTML = this.buildCardHTML(this.currentCardA);
+        wrapperB.innerHTML = this.buildCardHTML(this.currentCardB);
+        
+        // Re-attach event listeners
+        const arena = document.getElementById("game-arena");
+        if (arena) {
+          arena.querySelectorAll(".card-item").forEach(itemElement => {
+            itemElement.addEventListener("click", (e) => {
+              const aaId = parseInt(itemElement.getAttribute("data-aa-id"));
+              this.handleItemSelection(aaId, e);
+            });
+          });
+        }
+      }
+    } else if (this.gameState === "start") {
+      this.renderStartScreen();
+    } else if (this.gameState === "gameover") {
+      // Re-render game over screen with updated language
+      this.endGame();
+    }
   }
 }
 

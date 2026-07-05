@@ -126,7 +126,7 @@ const REPRESENTATION_TYPES = {
  *                  - id: number (0..20)
  *                  - items: Array of 5 objects: { aminoAcid, repType }
  */
-function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true) {
+function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true, allowedReps = [0, 1, 2, 3, 4, 5, 6]) {
   const rawCards = generatePG2_4();
   
   if (!verifyDeck(rawCards)) {
@@ -143,15 +143,21 @@ function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true) {
   }
 
   // Map each occurrence to a specific representation type
-  // representationMapping[aminoAcidIdx][cardIdx] = repType (0..4)
   const representationMapping = Array.from({ length: 21 }, () => ({}));
 
   for (let aaIdx = 0; aaIdx < 21; aaIdx++) {
     const cardIndices = occurrences[aaIdx]; // Exactly 5 cards
     
     if (guaranteeDifferentReps) {
-      // Assign 5 distinct representation types from 7 available to the 5 cards
-      const reps = [0, 1, 2, 3, 4, 5, 6];
+      // Assign distinct representation types from the allowed list
+      let reps = [...allowedReps];
+      if (reps.length === 0) reps = [0, 1, 2, 3, 4, 5, 6];
+      
+      // Pad to at least 5 reps if we need distinct ones but have fewer
+      while (reps.length < 5) {
+        reps = reps.concat(reps);
+      }
+      
       // Shuffle representation types
       for (let i = reps.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -162,9 +168,13 @@ function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true) {
         representationMapping[aaIdx][cardIdx] = reps[idx];
       });
     } else {
-      // Pick random representation types (may overlap) from all 7 types
+      // Pick random representation types from the allowed list
+      let reps = [...allowedReps];
+      if (reps.length === 0) reps = [0, 1, 2, 3, 4, 5, 6];
+      
       cardIndices.forEach(cardIdx => {
-        representationMapping[aaIdx][cardIdx] = Math.floor(Math.random() * 7);
+        const randIdx = Math.floor(Math.random() * reps.length);
+        representationMapping[aaIdx][cardIdx] = reps[randIdx];
       });
     }
   }
