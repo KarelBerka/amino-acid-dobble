@@ -390,10 +390,10 @@ function renderGeneratorPreview(recomputeMath = true) {
   
   const positions = [
     { x: 50, y: 50 },  // Center
-    { x: 23, y: 23 },  // Top-Left
-    { x: 77, y: 23 },  // Top-Right
-    { x: 23, y: 77 },  // Bottom-Left
-    { x: 77, y: 77 }   // Bottom-Right
+    { x: 27, y: 27 },  // Top-Left
+    { x: 73, y: 27 },  // Top-Right
+    { x: 27, y: 73 },  // Bottom-Left
+    { x: 73, y: 73 }   // Bottom-Right
   ];
 
   generatedDeck.forEach((card, idx) => {
@@ -408,7 +408,7 @@ function renderGeneratorPreview(recomputeMath = true) {
       const rep = item.repType;
       
       const rotation = rotateEnabled ? Math.floor(Math.random() * 360) : 0;
-      const scale = 0.95 + Math.random() * 0.25; // enlarged scale factor
+      const scale = 0.9 + Math.random() * 0.2; // adjusted scale factor
       
       let content = "";
       let classes = "card-item";
@@ -474,10 +474,10 @@ function renderHeroCards() {
   
   const positions = [
     { x: 50, y: 50 },  // Center
-    { x: 23, y: 23 },  // Top-Left
-    { x: 77, y: 23 },  // Top-Right
-    { x: 23, y: 77 },  // Bottom-Left
-    { x: 77, y: 77 }   // Bottom-Right
+    { x: 27, y: 27 },  // Top-Left
+    { x: 73, y: 27 },  // Top-Right
+    { x: 27, y: 73 },  // Bottom-Left
+    { x: 73, y: 73 }   // Bottom-Right
   ];
   
   const buildHeroCardHTML = (cardData) => {

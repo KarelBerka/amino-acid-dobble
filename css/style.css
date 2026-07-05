@@ -739,32 +739,32 @@ main {
   color: #1a202c;
   text-align: center;
   white-space: nowrap;
-  font-size: calc(7.5cqi * var(--scale, 1));
+  font-size: calc(7cqi * var(--scale, 1));
   line-height: 1.1;
 }
 
 .item-text.item-subtext {
-  font-size: calc(6.5cqi * var(--scale, 1));
+  font-size: calc(6cqi * var(--scale, 1));
   color: #4a5568;
   font-style: italic;
 }
 
 .item-code3 {
-  font-size: calc(11cqi * var(--scale, 1));
+  font-size: calc(10cqi * var(--scale, 1));
   font-weight: 800;
   color: var(--primary);
   white-space: nowrap;
 }
 
 .item-code1 {
-  font-size: calc(16cqi * var(--scale, 1));
+  font-size: calc(14.5cqi * var(--scale, 1));
   font-weight: 900;
   color: var(--accent);
   white-space: nowrap;
 }
 
 .item-condensed {
-  font-size: calc(5.5cqi * var(--scale, 1));
+  font-size: calc(5.2cqi * var(--scale, 1));
   font-family: monospace;
   font-weight: 700;
   color: #4a5568;
@@ -775,8 +775,8 @@ main {
 .item-structure svg,
 .item-structure img {
   display: block;
-  width: calc(38cqi * var(--scale, 1));
-  height: calc(38cqi * var(--scale, 1));
+  width: calc(33cqi * var(--scale, 1));
+  height: calc(33cqi * var(--scale, 1));
   object-fit: contain;
 }
 
