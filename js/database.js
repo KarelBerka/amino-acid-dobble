@@ -829,8 +829,12 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
   let minY = Infinity, maxY = -Infinity;
   
   structure.atoms.forEach(atom => {
-    // Add extra padding around text labels to prevent clipping
-    const padding = atom.label ? 10 : 2;
+    // Hide aliphatic carbon labels (CH3, CH2, CH, etc.) to show clean skeletal branches
+    const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(atom.label.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    const hasVisibleLabel = atom.label && !isAliphaticCarbon;
+    
+    // Add extra padding around visible text labels to prevent clipping
+    const padding = hasVisibleLabel ? 10 : 2;
     if (atom.x - padding < minX) minX = atom.x - padding;
     if (atom.x + padding > maxX) maxX = atom.x + padding;
     if (atom.y - padding < minY) minY = atom.y - padding;
@@ -881,7 +885,8 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
 
   // Draw atom labels (text) with white background mask to clean up overlapping bond lines
   structure.atoms.forEach(atom => {
-    if (atom.label) {
+    const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(atom.label.normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    if (atom.label && !isAliphaticCarbon) {
       const style = ATOM_STYLES[atom.type] || { color: bondColor, bg: "#FFFFFF", radius: 8 };
       
       // Determine font sizing and positioning offsets based on label length
