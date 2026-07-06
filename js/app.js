@@ -55,7 +55,7 @@ const TRANSLATIONS = {
     btn_print: "Tisknout sadu karet",
     preview_title: "Náhled karet (21 karet celkem)",
     btn_regenerate: "Přegenerovat sady",
-    footer_text: "<p>&copy; 2026 AA-Dobble Generator. Vytvořeno pro výuku biochemie a biogenních aminokyselin.</p>"
+    footer_text: "<p>&copy; 2026 AA-Dobble. Autor: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Vytvořeno pro výuku biochemie a biogenních aminokyselin.</p>"
   },
   en: {
     tab_home: "Home",
@@ -107,7 +107,7 @@ const TRANSLATIONS = {
     btn_print: "Print Card Deck",
     preview_title: "Card Preview (21 cards total)",
     btn_regenerate: "Regenerate Decks",
-    footer_text: "<p>&copy; 2026 AA-Dobble Generator. Designed for teaching biochemistry and proteinogenic amino acids.</p>"
+    footer_text: "<p>&copy; 2026 AA-Dobble. Author: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Designed for teaching biochemistry and proteinogenic amino acids.</p>"
   }
 };
 
