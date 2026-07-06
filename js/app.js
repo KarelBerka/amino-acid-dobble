@@ -32,6 +32,11 @@ const TRANSLATIONS = {
     card_shape_label: "Tvar karet",
     shape_circle: "Kulaté (Tradiční Dobble)",
     shape_square: "Čtvercové (Snazší stříhání)",
+    print_layout_label: "Počet karet na stránku (A4)",
+    layout_6: "6 karet (Velké - průměr 95 mm)",
+    layout_4: "4 karty (Obří - průměr 100 mm)",
+    layout_8: "8 karet (Střední - průměr 71 mm)",
+    layout_12: "12 karet (Malé - průměr 66 mm)",
     rotate_symbols_label: "Náhodně otáčet symboly",
     rotate_symbols_sub: "Zvyšuje obtížnost tím, že otáčí zkratky a strukturní vzorce.",
     guarantee_diff_label: "Vždy odlišné reprezentace",
@@ -79,6 +84,11 @@ const TRANSLATIONS = {
     card_shape_label: "Card Shape",
     shape_circle: "Circular (Classic Dobble)",
     shape_square: "Square (Easier to cut)",
+    print_layout_label: "Cards per page (A4)",
+    layout_6: "6 cards (Large - 95 mm diameter)",
+    layout_4: "4 cards (Giant - 100 mm diameter)",
+    layout_8: "8 cards (Medium - 71 mm diameter)",
+    layout_12: "12 cards (Small - 66 mm diameter)",
     rotate_symbols_label: "Randomly rotate symbols",
     rotate_symbols_sub: "Increases difficulty by rotating texts and structural formulas.",
     guarantee_diff_label: "Always different representations",
@@ -366,6 +376,7 @@ function initGenerator() {
   const printBtn = document.getElementById("btn-print-deck");
   
   const shapeSelect = document.getElementById("set-card-shape");
+  const printLayoutSelect = document.getElementById("set-print-layout");
   const rotationCheckbox = document.getElementById("set-random-rotation");
   const diffRepsCheckbox = document.getElementById("set-guarantee-diff-reps");
   const helpersCheckbox = document.getElementById("set-show-helpers");
@@ -377,6 +388,7 @@ function initGenerator() {
   }
   
   if (shapeSelect) shapeSelect.addEventListener("change", () => renderGeneratorPreview(false));
+  if (printLayoutSelect) printLayoutSelect.addEventListener("change", () => renderGeneratorPreview(false));
   if (rotationCheckbox) rotationCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
   if (helpersCheckbox) helpersCheckbox.addEventListener("change", () => renderGeneratorPreview(false));
   if (diffRepsCheckbox) diffRepsCheckbox.addEventListener("change", () => renderGeneratorPreview(true));
@@ -416,6 +428,10 @@ function renderGeneratorPreview(recomputeMath = true) {
     
     generatedDeck = generateDobbleDeck(AMINO_ACIDS, guaranteeDiff, allowedReps);
   }
+  
+  const printLayoutSelect = document.getElementById("set-print-layout");
+  const layoutVal = printLayoutSelect ? printLayoutSelect.value : "6";
+  grid.setAttribute("data-layout", layoutVal);
   
   grid.innerHTML = "";
   

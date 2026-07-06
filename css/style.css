@@ -1006,16 +1006,52 @@ main {
   
   .cards-grid {
     display: grid !important;
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 8mm !important;
     justify-content: center !important;
     align-content: center !important;
     page-break-inside: auto;
   }
   
+  /* 4 cards layout (2x2, 100mm) */
+  .cards-grid[data-layout="4"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0px !important;
+  }
+  .cards-grid[data-layout="4"] .dobble-card {
+    width: 100mm !important;
+    height: 100mm !important;
+  }
+  
+  /* 6 cards layout (2x3, 95mm) */
+  .cards-grid[data-layout="6"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0px !important;
+  }
+  .cards-grid[data-layout="6"] .dobble-card {
+    width: 95mm !important;
+    height: 95mm !important;
+  }
+  
+  /* 8 cards layout (2x4, 71mm) */
+  .cards-grid[data-layout="8"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0px !important;
+  }
+  .cards-grid[data-layout="8"] .dobble-card {
+    width: 71mm !important;
+    height: 71mm !important;
+  }
+  
+  /* 12 cards layout (3x4, 66mm) */
+  .cards-grid[data-layout="12"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0px !important;
+  }
+  .cards-grid[data-layout="12"] .dobble-card {
+    width: 66mm !important;
+    height: 66mm !important;
+  }
+  
   .dobble-card {
-    width: 92mm !important;
-    height: 92mm !important;
     border: 1px solid #000000 !important; /* solid border for cutting */
     page-break-inside: avoid !important;
     page-break-after: auto;
