@@ -960,6 +960,11 @@ main {
 
 /* --- Print Stylesheet --- */
 @media print {
+  @page {
+    margin: 5mm !important;
+    size: portrait;
+  }
+  
   body {
     background-color: #ffffff !important;
     color: #000000 !important;
@@ -968,7 +973,7 @@ main {
   header, 
   .theme-toggle-btn, 
   .generator-settings, 
-  .generator-preview-title button,
+  .generator-preview-title,
   footer {
     display: none !important;
   }
@@ -992,20 +997,29 @@ main {
     display: block !important;
   }
   
+  .generator-preview {
+    padding: 0 !important;
+    margin: 0 !important;
+    background: none !important;
+    border: none !important;
+  }
+  
   .cards-grid {
     display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 20px !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8mm !important;
+    justify-content: center !important;
+    align-content: center !important;
     page-break-inside: auto;
   }
   
   .dobble-card {
-    width: 180px !important;
-    height: 180px !important;
+    width: 92mm !important;
+    height: 92mm !important;
     border: 1px solid #000000 !important; /* solid border for cutting */
     page-break-inside: avoid !important;
     page-break-after: auto;
-    margin-bottom: 25px !important;
+    margin: 0 auto !important;
     box-shadow: none !important;
     background-color: #ffffff !important;
     -webkit-print-color-adjust: exact;
