@@ -2,8 +2,17 @@
 
 // Global state for active language
 const _VALID_LANGS = ["cs", "en", "de", "fr"];
+// URL ?lang= param takes top priority (used by /cz, /en, /de, /fr stub redirects)
+const _urlLang = new URLSearchParams(window.location.search).get("lang");
 const _storedLang = localStorage.getItem("aa_dobble_lang");
-window.currentLang = _VALID_LANGS.includes(_storedLang) ? _storedLang : "cs";
+const _resolvedLang = _VALID_LANGS.includes(_urlLang) ? _urlLang : (_VALID_LANGS.includes(_storedLang) ? _storedLang : "cs");
+if (_urlLang && _resolvedLang) {
+  // Persist the URL-specified language and clean the URL
+  localStorage.setItem("aa_dobble_lang", _resolvedLang);
+  const cleanUrl = window.location.pathname;
+  window.history.replaceState({}, "", cleanUrl);
+}
+window.currentLang = _resolvedLang;
 
 // Translation dictionary for DOM elements
 const TRANSLATIONS = {
