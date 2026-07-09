@@ -17,6 +17,9 @@ const AMINO_ACIDS = [
     formula: "C3H7NO2",
     condensed: "CH₃CH(NH₂)COOH",
     desc: "Jednoduchá alifatická aminokyselina s methylovou skupinou. Je jednou z nejčastějších aminokyselin v proteinech.",
+    descEn: "Simple aliphatic amino acid with a methyl side chain. One of the most abundant amino acids found in proteins.",
+    descDe: "Einfache aliphatische Aminosäure mit einer Methylseitengruppe. Gehört zu den häufigsten Aminosäuren in Proteinen.",
+    descFr: "Acide aminé aliphatique simple avec un groupement méthyle. L'une des acides aminés les plus abondants dans les protéines.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" }, // 0
@@ -47,6 +50,9 @@ const AMINO_ACIDS = [
     formula: "C6H14N4O2",
     condensed: "HN=C(NH₂)NH(CH₂)₃CH(NH₂)COOH",
     desc: "Aminokyselina s dlouhým postranním řetězcem zakončeným silně bazickou guanidinovou skupinou.",
+    descEn: "Amino acid with a long side chain ending in a strongly basic guanidinium group.",
+    descDe: "Aminosäure mit einer langen Seitenkette, die in einer stark basischen Guanidiniumgruppe endet.",
+    descFr: "Acide aminé avec une longue chaîne latérale se terminant par un groupe guanidinium fortement basique.",
     structure: {
       atoms: [
         { x: 20, y: 35, label: "H₂N", type: "N" },
@@ -90,6 +96,9 @@ const AMINO_ACIDS = [
     formula: "C4H8N2O3",
     condensed: "H₂NCOCH₂CH(NH₂)COOH",
     desc: "Polární aminokyselina s karboxamidovou skupinou v postranním řetězci. První izolovaná aminokyselina (z chřestu).",
+    descEn: "Polar amino acid with a carboxamide group in its side chain. The first amino acid ever isolated (from asparagus).",
+    descDe: "Polare Aminosäure mit einer Carboxamidgruppe in der Seitenkette. Erste isolierte Aminosäure (aus Spargel).",
+    descFr: "Acide aminé polaire avec un groupement carboxamide dans sa chaîne latérale. Premier acide aminé isolé (à partir d'asperges).",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -127,6 +136,9 @@ const AMINO_ACIDS = [
     formula: "C4H7NO4",
     condensed: "HOOCCH₂CH(NH₂)COOH",
     desc: "Kyselá aminokyselina (kyselina asparagová), která nese při fyziologickém pH záporný náboj.",
+    descEn: "Acidic amino acid (aspartic acid) that carries a negative charge at physiological pH.",
+    descDe: "Saure Aminosäure (Asparaginsäure), die bei physiologischem pH eine negative Ladung trägt.",
+    descFr: "Acide aminé acide (acide aspartique) qui porte une charge négative au pH physiologique.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -164,6 +176,9 @@ const AMINO_ACIDS = [
     formula: "C3H7NO2S",
     condensed: "HSCH₂CH(NH₂)COOH",
     desc: "Polární aminokyselina obsahující reaktivní sulfhydrylovou (-SH) skupinu, která tvoří disulfidické můstky.",
+    descEn: "Polar amino acid containing a reactive sulfhydryl (–SH) group capable of forming disulfide bridges.",
+    descDe: "Polare Aminosäure mit einer reaktiven Sulfhydrylgruppe (–SH), die Disulfidbrücken bilden kann.",
+    descFr: "Acide aminé polaire contenant un groupement sulfhydryle (–SH) réactif, capable de former des ponts disulfures.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -197,6 +212,9 @@ const AMINO_ACIDS = [
     formula: "C5H10N2O3",
     condensed: "H₂NCO(CH₂)₂CH(NH₂)COOH",
     desc: "Nejhojnější volná aminokyselina v těle. Slouží k bezpečnému transportu amoniaku krví.",
+    descEn: "The most abundant free amino acid in the body. Serves as a safe carrier of ammonia in the bloodstream.",
+    descDe: "Die häufigste freie Aminosäure im Körper. Dient als sicherer Ammoniak-Transporteur im Blut.",
+    descFr: "L'acide aminé libre le plus abondant dans l'organisme. Sert à transporter l'ammoniaque en toute sécurité dans le sang.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -236,6 +254,9 @@ const AMINO_ACIDS = [
     formula: "C5H9NO4",
     condensed: "HOOC(CH₂)₂CH(NH₂)COOH",
     desc: "Kyselá aminokyselina (kyselina glutamová). V mozku působí jako hlavní excitační neurotransmiter.",
+    descEn: "Acidic amino acid (glutamic acid). Acts as the main excitatory neurotransmitter in the brain.",
+    descDe: "Saure Aminosäure (Glutaminsäure). Wirkt im Gehirn als wichtigster erregender Neurotransmitter.",
+    descFr: "Acide aminé acide (acide glutamique). Agit comme principal neurotransmetteur excitateur dans le cerveau.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -275,6 +296,9 @@ const AMINO_ACIDS = [
     formula: "C2H5NO2",
     condensed: "H₂NCH₂COOH",
     desc: "Nejmenší a nejjednodušší aminokyselina. Jako jediná nemá asymetrický uhlík (je achirální).",
+    descEn: "The smallest and simplest amino acid. The only one without an asymmetric carbon atom (achiral).",
+    descDe: "Die kleinste und einfachste Aminosäure. Als einzige besitzt sie kein asymmetrisches Kohlenstoffatom (achiral).",
+    descFr: "Le plus petit et le plus simple des acides aminés. Le seul à ne pas posséder de carbone asymétrique (achiral).",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -305,6 +329,9 @@ const AMINO_ACIDS = [
     formula: "C6H9N3O2",
     condensed: "C₃H₃N₂CH₂CH(NH₂)COOH",
     desc: "Aminokyselina s imidazolovým kruhem. Její pKa je blízké fyziologickému pH (často v aktivních místech enzymů).",
+    descEn: "Amino acid with an imidazole ring. Its pKa is close to physiological pH, making it frequent in enzyme active sites.",
+    descDe: "Aminosäure mit einem Imidazolring. Ihr pKa liegt nahe am physiologischen pH – daher oft in aktiven Zentren von Enzymen.",
+    descFr: "Acide aminé avec un cycle imidazole. Son pKa proche du pH physiologique en fait un résidu fréquent dans les sites actifs des enzymes.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -347,6 +374,9 @@ const AMINO_ACIDS = [
     formula: "C6H13NO2",
     condensed: "CH₃CH₂CH(CH₃)CH(NH₂)COOH",
     desc: "Esenciální aminokyselina s rozvětveným řetězcem (BCAA). Je izomerem leucinu s asymetrickým Cβ.",
+    descEn: "Essential branched-chain amino acid (BCAA). An isomer of leucine with an additional asymmetric Cβ carbon.",
+    descDe: "Essentielle verzweigtkettige Aminosäure (BCAA). Ein Isomer des Leucins mit einem zusätzlichen asymmetrischen Cβ-Kohlenstoff.",
+    descFr: "Acide aminé essentiel à chaîne ramifiée (BCAA). Isomère de la leucine avec un Cβ asymétrique supplémentaire.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -384,6 +414,9 @@ const AMINO_ACIDS = [
     formula: "C6H13NO2",
     condensed: "(CH₃)₂CHCH₂CH(NH₂)COOH",
     desc: "Esenciální rozvětvená aminokyselina (BCAA). Slouží jako klíčový signální stimulátor syntézy svalových proteinů (mTOR).",
+    descEn: "Essential branched-chain amino acid (BCAA). A key activator of the mTOR pathway, stimulating muscle protein synthesis.",
+    descDe: "Essentielle verzweigtkettige Aminosäure (BCAA). Wichtiger Aktivator des mTOR-Signalwegs zur Stimulierung der Muskelproteinsynthese.",
+    descFr: "Acide aminé essentiel à chaîne ramifiée (BCAA). Activateur clé de la voie mTOR, stimulant la synthèse des protéines musculaires.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -421,6 +454,9 @@ const AMINO_ACIDS = [
     formula: "C6H14N2O2",
     condensed: "H₂N(CH₂)₄CH(NH₂)COOH",
     desc: "Esenciální aminokyselina s dlouhým alifatickým řetězcem zakončeným primární amino skupinou.",
+    descEn: "Essential amino acid with a long aliphatic chain ending in a primary amino group.",
+    descDe: "Essentielle Aminosäure mit einer langen aliphatischen Kette, die in einer primären Aminogruppe endet.",
+    descFr: "Acide aminé essentiel avec une longue chaîne aliphatique se terminant par un groupement amino primaire.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -460,6 +496,9 @@ const AMINO_ACIDS = [
     formula: "C5H11NO2S",
     condensed: "CH₃S(CH₂)₂CH(NH₂)COOH",
     desc: "Esenciální aminokyselina. Slouží jako startovní aminokyselina při syntéze proteinů (kodón AUG).",
+    descEn: "Essential amino acid. Serves as the initiator amino acid for protein synthesis (start codon AUG).",
+    descDe: "Essentielle Aminosäure. Dient als Start-Aminosäure bei der Proteinsynthese (Startcodon AUG).",
+    descFr: "Acide aminé essentiel. Sert d'acide aminé initiateur pour la synthèse des protéines (codon start AUG).",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -497,6 +536,9 @@ const AMINO_ACIDS = [
     formula: "C9H11NO2",
     condensed: "C₆H₅CH₂CH(NH₂)COOH",
     desc: "Esenciální aminokyselina s benzenovým kruhem. Je prekurzorem tyrosinu a katecholaminů.",
+    descEn: "Essential aromatic amino acid with a benzene ring. Precursor to tyrosine and catecholamines.",
+    descDe: "Essentielle aromatische Aminosäure mit einem Benzolring. Vorläufer von Tyrosin und Katecholaminen.",
+    descFr: "Acide aminé aromatique essentiel avec un cycle benzénique. Précurseur de la tyrosine et des catécholamines.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -541,6 +583,9 @@ const AMINO_ACIDS = [
     formula: "C5H9NO2",
     condensed: "C₄H₇NHCOOH",
     desc: "Sekundární aminokyselina (iminokyselina). Její cyklická struktura způsobuje 'zalomení' v alfa-helixech proteinů.",
+    descEn: "Secondary amino acid (imino acid). Its cyclic pyrrolidine ring introduces kinks and breaks in protein alpha-helices.",
+    descDe: "Sekundäre Aminosäure (Iminosäure). Ihr zyklischer Pyrrolidinring erzeugt Knicke und Unterbrechungen in Alpha-Helices von Proteinen.",
+    descFr: "Acide aminé secondaire (iminoacide). Son cycle pyrrolidine introduit des coudes dans les hélices alpha des protéines.",
     structure: {
       atoms: [
         { x: 22, y: 48, label: "HN", type: "N" },  // 0 (ring nitrogen)
@@ -577,6 +622,9 @@ const AMINO_ACIDS = [
     formula: "C3H7NO3",
     condensed: "HOCH₂CH(NH₂)COOH",
     desc: "Polární aminokyselina s hydroxylovou skupinou. Je často modifikována fosforylací v buněčné signalizaci.",
+    descEn: "Polar amino acid with a hydroxyl group. Frequently modified by phosphorylation in cellular signalling pathways.",
+    descDe: "Polare Aminosäure mit einer Hydroxylgruppe. Wird häufig durch Phosphorylierung in zellulären Signalwegen modifiziert.",
+    descFr: "Acide aminé polaire avec un groupement hydroxyle. Fréquemment modifié par phosphorylation dans les voies de signalisation cellulaire.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -610,6 +658,9 @@ const AMINO_ACIDS = [
     formula: "C4H9NO3",
     condensed: "CH₃CH(OH)CH(NH₂)COOH",
     desc: "Esenciální polární aminokyselina se dvěma chirálními centry. Cílové místo pro O-glykosylaci proteinů.",
+    descEn: "Essential polar amino acid with two chiral centres. A primary site for O-glycosylation of proteins.",
+    descDe: "Essentielle polare Aminosäure mit zwei chiralen Zentren. Hauptzielort für die O-Glykosylierung von Proteinen.",
+    descFr: "Acide aminé polaire essentiel avec deux centres chiraux. Site privilégié pour la O-glycosylation des protéines.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -645,6 +696,9 @@ const AMINO_ACIDS = [
     formula: "C11H12N2O2",
     condensed: "C₈H₆NCH₂CH(NH₂)COOH",
     desc: "Největší aminokyselina s dvojitým indolovým kruhem. Je esenciální a slouží jako prekurzor serotoninu a melatoninu.",
+    descEn: "The largest amino acid, with a bicyclic indole ring. Essential; serves as a precursor to serotonin and melatonin.",
+    descDe: "Die größte Aminosäure mit einem bizyklischen Indolring. Essenziell; Vorläufer von Serotonin und Melatonin.",
+    descFr: "Le plus grand des acides aminés, avec un cycle indole bicyclique. Essentiel ; précurseur de la sérotonine et de la mélatonine.",
     structure: {
       atoms: [
         { x: 15, y: 35, label: "H₂N", type: "N" },
@@ -698,6 +752,9 @@ const AMINO_ACIDS = [
     formula: "C9H11NO3",
     condensed: "HOC₆H₄CH₂CH(NH₂)COOH",
     desc: "Aromatická aminokyselina s fenolovou skupinou. Je klíčová pro syntézu hormonů štítné žlázy a neurotransmiteru dopaminu.",
+    descEn: "Aromatic amino acid with a phenol group. Key precursor for thyroid hormones and the neurotransmitter dopamine.",
+    descDe: "Aromatische Aminosäure mit einer Phenolgruppe. Wichtiger Vorläufer für Schilddrüsenhormone und den Neurotransmitter Dopamin.",
+    descFr: "Acide aminé aromatique avec un groupement phénol. Précurseur clé des hormones thyroïdiennes et du neurotransmetteur dopamine.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -746,6 +803,9 @@ const AMINO_ACIDS = [
     formula: "C5H11NO2",
     condensed: "(CH₃)₂CHCH(NH₂)COOH",
     desc: "Esenciální aminokyselina s rozvětveným isopropylovým řetězcem (BCAA). Důležitá pro regeneraci tkání.",
+    descEn: "Essential branched-chain amino acid (BCAA) with an isopropyl side chain. Important for tissue repair and regeneration.",
+    descDe: "Essentielle verzweigtkettige Aminosäure (BCAA) mit einer Isopropylseitenkette. Wichtig für Gewebereparatur und -regeneration.",
+    descFr: "Acide aminé essentiel à chaîne ramifiée (BCAA) avec une chaîne latérale isopropyle. Important pour la réparation et la régénération des tissus.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },
@@ -781,6 +841,9 @@ const AMINO_ACIDS = [
     formula: "C3H7NO2Se",
     condensed: "HSeCH₂CH(NH₂)COOH",
     desc: "Obsahuje selen místo síry (selenolová skupina). Je kódována stop-kodónem UGA za přítomnosti specifického SECIS elementu mRNA.",
+    descEn: "Contains selenium instead of sulfur (selenol group). Encoded by the UGA stop codon in the presence of a specific SECIS mRNA element.",
+    descDe: "Enthält Selen statt Schwefel (Selenolgruppe). Wird durch das UGA-Stoppcodon codiert, wenn ein spezifisches SECIS-mRNA-Element vorhanden ist.",
+    descFr: "Contient du sélénium à la place du soufre (groupe sélenol). Encodé par le codon stop UGA en présence d'un élément SECIS spécifique dans l'ARNm.",
     structure: {
       atoms: [
         { x: 20, y: 50, label: "H₂N", type: "N" },

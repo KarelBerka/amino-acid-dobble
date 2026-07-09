@@ -449,7 +449,11 @@ function renderEncyclopedia(filter, query) {
 
     const descText = lang === "cs"
       ? aa.desc
-      : `Essential amino acid in biochemical processes. Formula: ${aa.formula}. Side chain features ${aa.group} properties.`;
+      : lang === "de"
+      ? (aa.descDe || aa.descEn || aa.desc)
+      : lang === "fr"
+      ? (aa.descFr || aa.descEn || aa.desc)
+      : (aa.descEn || aa.desc);
     
     const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
     
