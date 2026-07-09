@@ -1,7 +1,9 @@
 // js/app.js
 
 // Global state for active language
-window.currentLang = localStorage.getItem("aa_dobble_lang") || "cs";
+const _VALID_LANGS = ["cs", "en", "de", "fr"];
+const _storedLang = localStorage.getItem("aa_dobble_lang");
+window.currentLang = _VALID_LANGS.includes(_storedLang) ? _storedLang : "cs";
 
 // Translation dictionary for DOM elements
 const TRANSLATIONS = {
@@ -108,6 +110,110 @@ const TRANSLATIONS = {
     preview_title: "Card Preview (21 cards total)",
     btn_regenerate: "Regenerate Decks",
     footer_text: "<p>&copy; 2026 AA-Dobble. Author: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Designed for teaching biochemistry and proteinogenic amino acids.</p>"
+  },
+  de: {
+    tab_home: "Startseite",
+    tab_encyclopedia: "Enzyklopädie",
+    tab_game: "Trainingsspiel",
+    tab_generator: "Kartengenerator",
+    hero_title: "AA-Dobble mit Aminosäuren",
+    hero_desc: "Willkommen beim interaktiven Kartengenerator und Trainingssimulator für Dobble. Diese einzigartige Variante vergleicht Symbole nach <strong>Bedeutung</strong>: Skelettformeln, englische Namen, tschechische Namen, 3-Buchstaben- und 1-Buchstaben-Codes der 21 proteinogenen Aminosäuren.",
+    hero_btn_play: "Spiel starten",
+    hero_btn_print: "Karten drucken",
+    how_title: "Wie funktioniert das Spiel?",
+    feat_math_title: "Mathematische Perfektion",
+    feat_math_desc: "Mithilfe einer projektiven Ebene der Ordnung 4 enthält das Deck genau 21 Karten und 21 Aminosäuren. Je zwei Karten haben <strong>genau eine</strong> gemeinsame Aminosäure.",
+    feat_meaning_title: "Semantischer Abgleich (Bedeutung)",
+    feat_meaning_desc: "Die gemeinsame Aminosäure zweier Karten wird in verschiedenen Formaten dargestellt (z. B. Skelettformel vs. 1-Buchstaben-Code). Sie müssen die chemischen Strukturen kennen, um den Treffer zu finden!",
+    feat_print_title: "Druckbarer Export",
+    feat_print_desc: "Passen Sie Kartenform (rund/quadratisch), Symbolrotation, Schnittmarken und Spickzettel an und drucken Sie direkt auf A4-Papier.",
+    search_placeholder: "Nach Name, Formel oder Code suchen...",
+    filter_all: "Alle",
+    filter_hydrophobic: "Hydrophob",
+    filter_polar: "Polar",
+    filter_basic: "Basisch",
+    filter_acidic: "Sauer",
+    filter_aromatic: "Aromatisch",
+    print_settings_title: "Druckeinstellungen",
+    card_shape_label: "Kartenform",
+    shape_circle: "Rund (Klassisches Dobble)",
+    shape_square: "Quadratisch (Leichter zu schneiden)",
+    print_layout_label: "Karten pro Seite (A4)",
+    layout_6: "6 Karten (Groß – 95 mm Durchmesser)",
+    layout_4: "4 Karten (Riesig – 100 mm Durchmesser)",
+    layout_8: "8 Karten (Mittel – 71 mm Durchmesser)",
+    layout_12: "12 Karten (Klein – 66 mm Durchmesser)",
+    rotate_symbols_label: "Symbole zufällig rotieren",
+    rotate_symbols_sub: "Erhöht die Schwierigkeit durch Drehen von Texten und Strukturformeln.",
+    guarantee_diff_label: "Immer unterschiedliche Darstellungen",
+    guarantee_diff_sub: "Stellt sicher, dass die gemeinsame Aminosäure auf beiden Karten in unterschiedlicher Form erscheint (z. B. Text vs. Struktur).",
+    active_reps_label: "Aktive Darstellungen auf Karten",
+    active_reps_sub: "Wählen Sie mindestens 1 Darstellungstyp. Weniger als 5 führt zu Wiederholungen.",
+    rep_name: "Name (sprachabhängig)",
+    rep_alt_name: "Alternativer Name / Formel",
+    rep_code3: "3-Buchstaben-Code",
+    rep_code1: "1-Buchstaben-Code",
+    rep_structure2d: "2D-Struktur",
+    rep_structure3d: "3D-Modell (PyMOL)",
+    rep_smiles: "SMILES-Zeichenkette",
+    show_cheat_label: "Spickzettel anzeigen (Lösungen)",
+    show_cheat_sub: "Druckt die Aminosäureliste in kleiner Schrift in jede Kartenecke zur Überprüfung.",
+    btn_print: "Kartensatz drucken",
+    preview_title: "Kartenvorschau (21 Karten gesamt)",
+    btn_regenerate: "Decks neu generieren",
+    footer_text: "<p>&copy; 2026 AA-Dobble. Autor: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Entwickelt für den Unterricht in Biochemie und proteinogenen Aminosäuren.</p>"
+  },
+  fr: {
+    tab_home: "Accueil",
+    tab_encyclopedia: "Encyclopédie",
+    tab_game: "Jeu d'entraînement",
+    tab_generator: "Générateur de cartes",
+    hero_title: "AA-Dobble avec les acides aminés",
+    hero_desc: "Bienvenue dans le générateur de cartes interactif et le simulateur d'entraînement pour Dobble. Cette variante unique fait correspondre les symboles par <strong>signification</strong> : formules squelettiques, noms anglais, noms tchèques, codes à 3 lettres et à 1 lettre des 21 acides aminés protéinogènes.",
+    hero_btn_play: "Jouer",
+    hero_btn_print: "Imprimer les cartes",
+    how_title: "Comment fonctionne le jeu ?",
+    feat_math_title: "Perfection mathématique",
+    feat_math_desc: "Grâce à un plan projectif d'ordre 4, le jeu contient exactement 21 cartes et 21 acides aminés. Deux cartes quelconques partagent <strong>exactement un</strong> acide aminé commun.",
+    feat_meaning_title: "Correspondance sémantique (sens)",
+    feat_meaning_desc: "L'acide aminé commun entre deux cartes est représenté dans des formats différents (ex. : formule squelettique vs. code à 1 lettre). Vous devez connaître les structures chimiques pour identifier la correspondance !",
+    feat_print_title: "Export imprimable",
+    feat_print_desc: "Personnalisez la forme des cartes (rond/carré), la rotation des éléments, les marques de coupe et imprimez directement sur papier A4.",
+    search_placeholder: "Rechercher par nom, formule ou code...",
+    filter_all: "Tous",
+    filter_hydrophobic: "Hydrophobe",
+    filter_polar: "Polaire",
+    filter_basic: "Basique",
+    filter_acidic: "Acide",
+    filter_aromatic: "Aromatique",
+    print_settings_title: "Paramètres d'impression",
+    card_shape_label: "Forme des cartes",
+    shape_circle: "Rondes (Dobble classique)",
+    shape_square: "Carrées (Plus facile à découper)",
+    print_layout_label: "Cartes par page (A4)",
+    layout_6: "6 cartes (Grandes – 95 mm de diamètre)",
+    layout_4: "4 cartes (Géantes – 100 mm de diamètre)",
+    layout_8: "8 cartes (Moyennes – 71 mm de diamètre)",
+    layout_12: "12 cartes (Petites – 66 mm de diamètre)",
+    rotate_symbols_label: "Rotation aléatoire des symboles",
+    rotate_symbols_sub: "Augmente la difficulté en faisant pivoter les textes et les formules.",
+    guarantee_diff_label: "Toujours des représentations différentes",
+    guarantee_diff_sub: "Garantit que l'acide aminé commun apparaît dans des formats différents sur les deux cartes (ex. : texte vs. structure).",
+    active_reps_label: "Représentations actives sur les cartes",
+    active_reps_sub: "Choisissez au moins 1 type de représentation. En choisir moins de 5 entraîne des répétitions.",
+    rep_name: "Nom (selon la langue)",
+    rep_alt_name: "Nom alternatif / Formule",
+    rep_code3: "Code à 3 lettres",
+    rep_code1: "Code à 1 lettre",
+    rep_structure2d: "Structure 2D",
+    rep_structure3d: "Modèle 3D (PyMOL)",
+    rep_smiles: "Chaîne SMILES",
+    show_cheat_label: "Afficher l'antisèche (solutions)",
+    show_cheat_sub: "Imprime la liste des acides aminés en petits caractères dans le coin de chaque carte.",
+    btn_print: "Imprimer le jeu de cartes",
+    preview_title: "Aperçu des cartes (21 cartes au total)",
+    btn_regenerate: "Régénérer les jeux",
+    footer_text: "<p>&copy; 2026 AA-Dobble. Auteur : <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Conçu pour l'enseignement de la biochimie et des acides aminés protéinogènes.</p>"
   }
 };
 
@@ -164,28 +270,30 @@ function updateThemeIcon(theme) {
 /* --- Localization Management --- */
 function initLanguage() {
   const langToggle = document.getElementById("lang-toggle");
-  
-  // Set initial button text and translate page
-  langToggle.textContent = window.currentLang === "cs" ? "EN" : "CZ";
+
+  // Restore saved language
+  langToggle.value = window.currentLang;
   translatePage();
-  
-  langToggle.addEventListener("click", () => {
-    window.currentLang = window.currentLang === "cs" ? "en" : "cs";
+
+  langToggle.addEventListener("change", () => {
+    window.currentLang = langToggle.value;
     localStorage.setItem("aa_dobble_lang", window.currentLang);
-    langToggle.textContent = window.currentLang === "cs" ? "EN" : "CZ";
     
+    // Update html lang attribute for accessibility / SEO
+    document.documentElement.setAttribute("lang", window.currentLang);
+
     // Update translations
     translatePage();
-    
+
     // Refresh Encyclopedia and Generator if active
     const searchInput = document.getElementById("ref-search");
     const activeFilter = document.querySelector("#ref-filters .filter-btn.active").getAttribute("data-filter");
     renderEncyclopedia(activeFilter, searchInput.value.toLowerCase().trim());
-    
+
     if (document.getElementById("generator-tab").classList.contains("active")) {
       renderGeneratorPreview(false); // redraw visually
     }
-    
+
     // Update active game start screen or state
     if (activeGameInstance) {
       if (activeGameInstance.gameState !== "playing") {
@@ -195,7 +303,7 @@ function initLanguage() {
         activeGameInstance.updateLang();
       }
     }
-    
+
     // Redraw hero showcase
     renderHeroCards();
   });
@@ -306,8 +414,12 @@ function renderEncyclopedia(filter, query) {
   });
   
   if (filtered.length === 0) {
-    const noResultsText = lang === "cs" 
-      ? `Nebuly nalezeny žádné aminokyseliny. Zkuste upravit vyhledávací výraz.` 
+    const noResultsText = lang === "cs"
+      ? `Nebuly nalezeny žádné aminokyseliny. Zkuste upravit vyhledávací výraz.`
+      : lang === "de"
+      ? `Keine Aminosäuren gefunden. Verfeinern Sie Ihre Suche.`
+      : lang === "fr"
+      ? `Aucun acide aminé trouvé. Affinez votre recherche.`
       : `No amino acids found. Try refining your search.`;
     grid.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-muted);">
@@ -322,12 +434,12 @@ function renderEncyclopedia(filter, query) {
     card.className = "aa-card";
     
     const badgeClass = `badge-${aa.group}`;
-    const badgeLabel = lang === "cs" 
-      ? aa.groupCz.split(" ")[0] 
+    const badgeLabel = lang === "cs"
+      ? aa.groupCz.split(" ")[0]
       : aa.group.charAt(0).toUpperCase() + aa.group.slice(1);
-    
-    const descText = lang === "cs" 
-      ? aa.desc 
+
+    const descText = lang === "cs"
+      ? aa.desc
       : `Essential amino acid in biochemical processes. Formula: ${aa.formula}. Side chain features ${aa.group} properties.`;
     
     const formattedFormula = aa.condensed.replace(/(\d+)/g, "<sub>$1</sub>").replace(/([⁺⁻])/g, "<sup>$1</sup>");
@@ -466,7 +578,7 @@ function renderGeneratorPreview(recomputeMath = true) {
       let classes = "card-item";
       
       if (rep === 0) {
-        const displayName = lang === "cs" ? aa.name : aa.engName;
+        const displayName = lang === "cs" ? aa.name : aa.engName; // DE/FR use English name as fallback
         content = `<span class="item-text">${displayName}</span>`;
       } else if (rep === 1) {
         if (lang === "cs") {

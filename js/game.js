@@ -133,9 +133,45 @@ class AADobbleGame {
         correctInRow: "correct in a row",
         personalBest: "Personal best:",
         restartBtn: "Play Again"
+      },
+      de: {
+        title: "Trainingszentrum",
+        rules: "Üben Sie die Erkennung proteinogener Aminosäuren. Sie sehen zwei Karten. Finden Sie die gemeinsame Aminosäure und klicken Sie darauf!",
+        subRules: "<strong>Regeln:</strong> Richtige Treffer geben Punkte und verlängern die Zeit (+3s). Fehler kosten Zeit (-5s) und brechen die Kombo-Serie ab.",
+        record: "Persönlicher Rekord:",
+        points: "Punkte",
+        startBtn: "Training starten",
+        scoreLabel: "Punkte",
+        streakLabel: "Serie (Kombo)",
+        timeLabel: "Verbleibende Zeit",
+        gameOver: "Spiel vorbei!",
+        newRecord: "🎉 NEUER PERSÖNLICHER REKORD! 🎉",
+        scoreResult: "Sie haben folgende Gesamtpunktzahl erreicht:",
+        streakResult: "Längste fehlerfreie Serie:",
+        correctInRow: "richtig in Folge",
+        personalBest: "Persönlicher Rekord:",
+        restartBtn: "Nochmals spielen"
+      },
+      fr: {
+        title: "Centre d'entraînement",
+        rules: "Entraînez-vous à identifier les acides aminés protéinogènes. Vous verrez deux cartes. Trouvez l'acide aminé commun et cliquez dessus !",
+        subRules: "<strong>Règles :</strong> Les bonnes réponses rapportent des points et prolongent le temps (+3s). Les erreurs font perdre du temps (-5s) et brisent le combo.",
+        record: "Meilleur score personnel :",
+        points: "points",
+        startBtn: "Commencer l'entraînement",
+        scoreLabel: "Score",
+        streakLabel: "Série (Combo)",
+        timeLabel: "Temps restant",
+        gameOver: "Fin du jeu !",
+        newRecord: "🎉 NOUVEAU RECORD PERSONNEL ! 🎉",
+        scoreResult: "Vous avez obtenu un score total de :",
+        streakResult: "Série sans erreur la plus longue :",
+        correctInRow: "bonnes réponses consécutives",
+        personalBest: "Meilleur score :",
+        restartBtn: "Rejouer"
       }
     };
-    return dict[lang][key];
+    return (dict[lang] || dict["en"])[key];
   }
 
   /**
