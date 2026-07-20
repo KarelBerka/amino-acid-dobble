@@ -343,11 +343,10 @@ class AADobbleGame {
       let classes = "card-item";
       
       if (rep === 0) {
-        // Czech Name in CZ mode, English Name in EN mode
-        const displayName = lang === "cs" ? aa.name : aa.engName;
-        content = `<span class="item-text">${displayName}</span>`;
+        // Localized name: Czech in CZ, English in EN, German in DE, French in FR
+        content = `<span class="item-text">${getAAName(aa, lang)}</span>`;
       } else if (rep === 1) {
-        // English Name in CZ mode, Condensed Formula in EN mode
+        // English Name in CZ mode, Condensed Formula in all other modes
         if (lang === "cs") {
           content = `<span class="item-text item-subtext">${aa.engName}</span>`;
         } else {
@@ -363,7 +362,7 @@ class AADobbleGame {
         content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else if (rep === 5) { // 3D Structure (PNG)
         classes += " item-structure";
-        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D" onerror="this.style.display='none'">`;
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${getAAName(aa, lang)} 3D" onerror="this.style.display='none'">`;
       } else { // SMILES (rep === 6)
         content = `<span class="item-smiles">${aa.smiles}</span>`;
       }

@@ -9,6 +9,8 @@ const AMINO_ACIDS = [
     id: 0,
     name: "Alanin",
     engName: "Alanine",
+    nameDe: "Alanin",
+    nameFr: "Alanine",
     code3: "Ala",
     smiles: "CC(N)C(=O)O",
     code1: "A",
@@ -42,6 +44,8 @@ const AMINO_ACIDS = [
     id: 1,
     name: "Arginin",
     engName: "Arginine",
+    nameDe: "Arginin",
+    nameFr: "Arginine",
     code3: "Arg",
     smiles: "NC(=N)NCCCC(N)C(=O)O",
     code1: "R",
@@ -88,6 +92,8 @@ const AMINO_ACIDS = [
     id: 2,
     name: "Asparagin",
     engName: "Asparagine",
+    nameDe: "Asparagin",
+    nameFr: "Asparagine",
     code3: "Asn",
     smiles: "NC(=O)CC(N)C(=O)O",
     code1: "N",
@@ -128,6 +134,8 @@ const AMINO_ACIDS = [
     id: 3,
     name: "Aspartát",
     engName: "Aspartate",
+    nameDe: "Aspartat",
+    nameFr: "Aspartate",
     code3: "Asp",
     smiles: "OC(=O)CC(N)C(=O)O",
     code1: "D",
@@ -168,6 +176,8 @@ const AMINO_ACIDS = [
     id: 4,
     name: "Cystein",
     engName: "Cysteine",
+    nameDe: "Cystein",
+    nameFr: "Cystéine",
     code3: "Cys",
     smiles: "C(C(C(=O)O)N)S",
     code1: "C",
@@ -204,6 +214,8 @@ const AMINO_ACIDS = [
     id: 5,
     name: "Glutamin",
     engName: "Glutamine",
+    nameDe: "Glutamin",
+    nameFr: "Glutamine",
     code3: "Gln",
     smiles: "NC(=O)CCC(N)C(=O)O",
     code1: "Q",
@@ -246,6 +258,8 @@ const AMINO_ACIDS = [
     id: 6,
     name: "Glutamát",
     engName: "Glutamate",
+    nameDe: "Glutamat",
+    nameFr: "Glutamate",
     code3: "Glu",
     smiles: "OC(=O)CCC(N)C(=O)O",
     code1: "E",
@@ -288,6 +302,8 @@ const AMINO_ACIDS = [
     id: 7,
     name: "Glycin",
     engName: "Glycine",
+    nameDe: "Glycin",
+    nameFr: "Glycine",
     code3: "Gly",
     smiles: "NCC(=O)O",
     code1: "G",
@@ -321,6 +337,8 @@ const AMINO_ACIDS = [
     id: 8,
     name: "Histidin",
     engName: "Histidine",
+    nameDe: "Histidin",
+    nameFr: "Histidine",
     code3: "His",
     smiles: "NC(Cc1c[nH]cn1)C(=O)O",
     code1: "H",
@@ -366,6 +384,8 @@ const AMINO_ACIDS = [
     id: 9,
     name: "Isoleucin",
     engName: "Isoleucine",
+    nameDe: "Isoleucin",
+    nameFr: "Isoleucine",
     code3: "Ile",
     smiles: "CCC(C)C(N)C(=O)O",
     code1: "I",
@@ -406,6 +426,8 @@ const AMINO_ACIDS = [
     id: 10,
     name: "Leucin",
     engName: "Leucine",
+    nameDe: "Leucin",
+    nameFr: "Leucine",
     code3: "Leu",
     smiles: "CC(C)CC(N)C(=O)O",
     code1: "L",
@@ -446,6 +468,8 @@ const AMINO_ACIDS = [
     id: 11,
     name: "Lysin",
     engName: "Lysine",
+    nameDe: "Lysin",
+    nameFr: "Lysine",
     code3: "Lys",
     smiles: "NCCCC(N)C(=O)O",
     code1: "K",
@@ -488,6 +512,8 @@ const AMINO_ACIDS = [
     id: 12,
     name: "Methionin",
     engName: "Methionine",
+    nameDe: "Methionin",
+    nameFr: "Méthionine",
     code3: "Met",
     smiles: "CSCCC(N)C(=O)O",
     code1: "M",
@@ -528,6 +554,8 @@ const AMINO_ACIDS = [
     id: 13,
     name: "Fenylalanin",
     engName: "Phenylalanine",
+    nameDe: "Phenylalanin",
+    nameFr: "Phénylalanine",
     code3: "Phe",
     smiles: "NC(Cc1ccccc1)C(=O)O",
     code1: "F",
@@ -575,6 +603,8 @@ const AMINO_ACIDS = [
     id: 14,
     name: "Prolin",
     engName: "Proline",
+    nameDe: "Prolin",
+    nameFr: "Proline",
     code3: "Pro",
     smiles: "C1CCNC1C(=O)O",
     code1: "P",
@@ -614,6 +644,8 @@ const AMINO_ACIDS = [
     id: 15,
     name: "Serin",
     engName: "Serine",
+    nameDe: "Serin",
+    nameFr: "Sérine",
     code3: "Ser",
     smiles: "OCC(N)C(=O)O",
     code1: "S",
@@ -650,6 +682,8 @@ const AMINO_ACIDS = [
     id: 16,
     name: "Threonin",
     engName: "Threonine",
+    nameDe: "Threonin",
+    nameFr: "Thréonine",
     code3: "Thr",
     smiles: "CC(O)C(N)C(=O)O",
     code1: "T",
@@ -688,6 +722,8 @@ const AMINO_ACIDS = [
     id: 17,
     name: "Tryptofan",
     engName: "Tryptophan",
+    nameDe: "Tryptophan",
+    nameFr: "Tryptophane",
     code3: "Trp",
     smiles: "NC(Cc1c[nH]c2ccccc12)C(=O)O",
     code1: "W",
@@ -744,6 +780,8 @@ const AMINO_ACIDS = [
     id: 18,
     name: "Tyrosin",
     engName: "Tyrosine",
+    nameDe: "Tyrosin",
+    nameFr: "Tyrosine",
     code3: "Tyr",
     smiles: "NC(Cc1ccc(O)cc1)C(=O)O",
     code1: "Y",
@@ -795,6 +833,8 @@ const AMINO_ACIDS = [
     id: 19,
     name: "Valin",
     engName: "Valine",
+    nameDe: "Valin",
+    nameFr: "Valine",
     code3: "Val",
     smiles: "CC(C)C(N)C(=O)O",
     code1: "V",
@@ -833,6 +873,8 @@ const AMINO_ACIDS = [
     id: 20,
     name: "Selenocystein",
     engName: "Selenocysteine",
+    nameDe: "Selenocystein",
+    nameFr: "Sélénocystéine",
     code3: "Sec",
     smiles: "NC(C[SeH])C(=O)O",
     code1: "U",
@@ -971,4 +1013,21 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
   });
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vbX} ${vbY} ${vbW} ${vbH}" width="${width}" height="${height}">${svgContent}</svg>`;
+}
+
+/**
+ * Returns the localized name of an amino acid for a given language code.
+ * Falls back gracefully: de/fr → their own name → engName → name.
+ * @param {Object} aa   - Amino acid object from AMINO_ACIDS
+ * @param {string} lang - Language code: "cs" | "en" | "de" | "fr"
+ * @returns {string}
+ */
+function getAAName(aa, lang) {
+  switch (lang) {
+    case "cs": return aa.name;
+    case "de": return aa.nameDe || aa.engName;
+    case "fr": return aa.nameFr || aa.engName;
+    case "en":
+    default:   return aa.engName;
+  }
 }

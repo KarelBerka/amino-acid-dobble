@@ -412,6 +412,8 @@ function renderEncyclopedia(filter, query) {
       return (
         aa.name.toLowerCase().includes(query) ||
         aa.engName.toLowerCase().includes(query) ||
+        (aa.nameDe && aa.nameDe.toLowerCase().includes(query)) ||
+        (aa.nameFr && aa.nameFr.toLowerCase().includes(query)) ||
         aa.code3.toLowerCase().includes(query) ||
         aa.code1.toLowerCase().includes(query) ||
         aa.formula.toLowerCase().includes(query) ||
@@ -460,7 +462,7 @@ function renderEncyclopedia(filter, query) {
     card.innerHTML = `
       <div class="aa-header">
         <div class="aa-title">
-          <span class="aa-cz-name">${lang === "cs" ? aa.name : aa.engName}</span>
+          <span class="aa-cz-name">${getAAName(aa, lang)}</span>
           <span class="aa-eng-name">${lang === "cs" ? aa.engName : aa.name}</span>
         </div>
         <span class="aa-badge ${badgeClass}">${badgeLabel}</span>
@@ -476,7 +478,7 @@ function renderEncyclopedia(filter, query) {
           ${renderStructureToSVG(aa.structure, 100, 100)}
         </div>
         <div class="aa-structure-preview" title="3D Ball-and-Stick (PyMOL)">
-          <img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D model" onerror="this.style.display='none'">
+          <img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${getAAName(aa, lang)} 3D model" onerror="this.style.display='none'">
         </div>
       </div>
       
@@ -591,8 +593,7 @@ function renderGeneratorPreview(recomputeMath = true) {
       let classes = "card-item";
       
       if (rep === 0) {
-        const displayName = lang === "cs" ? aa.name : aa.engName; // DE/FR use English name as fallback
-        content = `<span class="item-text">${displayName}</span>`;
+        content = `<span class="item-text">${getAAName(aa, lang)}</span>`;
       } else if (rep === 1) {
         if (lang === "cs") {
           content = `<span class="item-text item-subtext">${aa.engName}</span>`;
@@ -609,7 +610,7 @@ function renderGeneratorPreview(recomputeMath = true) {
         content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else if (rep === 5) {
         classes += " item-structure";
-        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D" onerror="this.style.display='none'">`;
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${getAAName(aa, lang)} 3D" onerror="this.style.display='none'">`;
       } else {
         content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
@@ -670,8 +671,7 @@ function renderHeroCards() {
       let classes = "card-item";
       
       if (rep === 0) {
-        const displayName = lang === "cs" ? aa.name : aa.engName;
-        content = `<span class="item-text">${displayName}</span>`;
+        content = `<span class="item-text">${getAAName(aa, lang)}</span>`;
       } else if (rep === 1) {
         if (lang === "cs") {
           content = `<span class="item-text item-subtext">${aa.engName}</span>`;
@@ -688,7 +688,7 @@ function renderHeroCards() {
         content = renderStructureToSVG(aa.structure, "100%", "100%");
       } else if (rep === 5) {
         classes += " item-structure";
-        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${lang === 'cs' ? aa.name : aa.engName} 3D" onerror="this.style.display='none'">`;
+        content = `<img src="assets/structures/${aa.code3.toLowerCase()}.png" alt="${getAAName(aa, lang)} 3D" onerror="this.style.display='none'">`;
       } else {
         content = `<span class="item-smiles">${aa.smiles}</span>`;
       }
