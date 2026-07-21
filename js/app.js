@@ -66,7 +66,7 @@ const TRANSLATIONS = {
     btn_print: "Tisknout sadu karet",
     preview_title: "Náhled karet (21 karet celkem)",
     btn_regenerate: "Přegenerovat sady",
-    footer_text: "<p>&copy; 2026 AA-Dobble. Autor: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Vytvořeno pro výuku biochemie a biogenních aminokyselin.</p>"
+    footer_text: "<p>&copy; 2026 AA-Dobble. Součást <a href=\"https://karelberka.github.io/bio-dobble/\" style=\"color: var(--primary); font-weight: 700;\">BioDobble Portal</a>. Autor: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. <a href=\"https://github.com/KarelBerka/amino-acid-dobble\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">GitHub</a>.</p>"
   },
   en: {
     tab_home: "Home",
@@ -118,7 +118,7 @@ const TRANSLATIONS = {
     btn_print: "Print Card Deck",
     preview_title: "Card Preview (21 cards total)",
     btn_regenerate: "Regenerate Decks",
-    footer_text: "<p>&copy; 2026 AA-Dobble. Author: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Designed for teaching biochemistry and proteinogenic amino acids.</p>"
+    footer_text: "<p>&copy; 2026 AA-Dobble. Part of <a href=\"https://karelberka.github.io/bio-dobble/\" style=\"color: var(--primary); font-weight: 700;\">BioDobble Portal</a>. Author: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. <a href=\"https://github.com/KarelBerka/amino-acid-dobble\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">GitHub</a>.</p>"
   },
   de: {
     tab_home: "Startseite",
@@ -170,7 +170,7 @@ const TRANSLATIONS = {
     btn_print: "Kartensatz drucken",
     preview_title: "Kartenvorschau (21 Karten gesamt)",
     btn_regenerate: "Decks neu generieren",
-    footer_text: "<p>&copy; 2026 AA-Dobble. Autor: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Entwickelt für den Unterricht in Biochemie und proteinogenen Aminosäuren.</p>"
+    footer_text: "<p>&copy; 2026 AA-Dobble. Teil von <a href=\"https://karelberka.github.io/bio-dobble/\" style=\"color: var(--primary); font-weight: 700;\">BioDobble Portal</a>. Autor: <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. <a href=\"https://github.com/KarelBerka/amino-acid-dobble\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">GitHub</a>.</p>"
   },
   fr: {
     tab_home: "Accueil",
@@ -222,7 +222,7 @@ const TRANSLATIONS = {
     btn_print: "Imprimer le jeu de cartes",
     preview_title: "Aperçu des cartes (21 cartes au total)",
     btn_regenerate: "Régénérer les jeux",
-    footer_text: "<p>&copy; 2026 AA-Dobble. Auteur : <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. Conçu pour l'enseignement de la biochimie et des acides aminés protéinogènes.</p>"
+    footer_text: "<p>&copy; 2026 AA-Dobble. Fait partie de <a href=\"https://karelberka.github.io/bio-dobble/\" style=\"color: var(--primary); font-weight: 700;\">BioDobble Portal</a>. Auteur : <a href=\"https://karelberka.github.io\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">Karel Berka</a>. <a href=\"https://github.com/KarelBerka/amino-acid-dobble\" target=\"_blank\" rel=\"noopener\" style=\"color: var(--primary); font-weight: 700; text-decoration: none;\">GitHub</a>.</p>"
   }
 };
 
