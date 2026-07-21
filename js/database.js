@@ -928,7 +928,7 @@ const ATOM_STYLES = {
  * @param {number} bondWidth Thickness of the bond lines
  * @returns {string} The SVG element as HTML string
  */
-function renderStructureToSVG(structure, width = 140, height = 140, bondColor = "#2D3748", bondWidth = 2.5) {
+function renderStructureToSVG(structure, width = 140, height = 140, bondColor = "#000000", bondWidth = 2.0) {
   // Find coordinate bounds to auto-scale/fit the drawing
   let minX = Infinity, maxX = -Infinity;
   let minY = Infinity, maxY = -Infinity;
@@ -939,19 +939,22 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
     const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(cleanLabel);
     const hasVisibleLabel = atom.label && !isAliphaticCarbon;
     
-    // Add extra padding around visible text labels to prevent clipping
-    const padding = hasVisibleLabel ? 10 : 2;
-    if (atom.x - padding < minX) minX = atom.x - padding;
-    if (atom.x + padding > maxX) maxX = atom.x + padding;
-    if (atom.y - padding < minY) minY = atom.y - padding;
-    if (atom.y + padding > maxY) maxY = atom.y + padding;
+    // Calculate padding dynamically to avoid unnecessary empty margin
+    const labelWidth = atom.label ? atom.label.length * 7 : 0;
+    const paddingX = hasVisibleLabel ? Math.max(labelWidth / 2 + 1, 4) : 2;
+    const paddingY = hasVisibleLabel ? 6 : 2;
+    
+    if (atom.x - paddingX < minX) minX = atom.x - paddingX;
+    if (atom.x + paddingX > maxX) maxX = atom.x + paddingX;
+    if (atom.y - paddingY < minY) minY = atom.y - paddingY;
+    if (atom.y + paddingY > maxY) maxY = atom.y + paddingY;
   });
 
   const contentW = maxX - minX;
   const contentH = maxY - minY;
   
   // Create padding and maintain aspect ratio
-  const margin = 10;
+  const margin = 3; // Tight margin to enlarge the molecule
   const paddedW = contentW + 2 * margin;
   const paddedH = contentH + 2 * margin;
   
@@ -994,7 +997,11 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
     const cleanLabel = atom.label ? atom.label.replace(/[\u2080-\u2089]/g, m => String.fromCharCode(m.charCodeAt(0) - 0x2080 + 48)) : "";
     const isAliphaticCarbon = atom.label && /^(CH\d*|H\d*C|C)$/i.test(cleanLabel);
     if (atom.label && !isAliphaticCarbon) {
-      const style = ATOM_STYLES[atom.type] || { color: bondColor, bg: "#FFFFFF", radius: 8 };
+      let color = "#000000";
+      if (atom.type === "O") color = "#d32f2f"; // Wikipedia Red
+      if (atom.type === "N") color = "#1976d2"; // Wikipedia Blue
+      if (atom.type === "S") color = "#d97706"; // Wikipedia Gold
+      if (atom.type === "Se") color = "#e65100"; // Wikipedia Selenium
       
       // Determine font sizing and positioning offsets based on label length
       let labelWidth = atom.label.length * 7;
@@ -1002,12 +1009,12 @@ function renderStructureToSVG(structure, width = 140, height = 140, bondColor = 
       
       // Render white backing rectangle for mask
       svgContent += `
-        <rect x="${atom.x - labelWidth/2}" y="${atom.y - labelHeight}" width="${labelWidth}" height="${labelHeight * 1.5}" fill="#FFFFFF" rx="3" ry="3"/>
+        <rect x="${atom.x - labelWidth/2}" y="${atom.y - labelHeight/2 - 1}" width="${labelWidth}" height="${labelHeight * 1.3}" fill="#FFFFFF" />
       `;
       
       // Render colored text label
       svgContent += `
-        <text x="${atom.x}" y="${atom.y + 2}" font-family="system-ui, -apple-system, sans-serif" font-size="11px" font-weight="bold" fill="${style.color}" text-anchor="middle" dominant-baseline="middle">${atom.label}</text>
+        <text x="${atom.x}" y="${atom.y + 1}" font-family="Arial, Helvetica, sans-serif" font-size="11px" font-weight="normal" fill="${color}" text-anchor="middle" dominant-baseline="middle">${atom.label}</text>
       `;
     }
   });
