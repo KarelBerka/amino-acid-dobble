@@ -1,0 +1,1 @@
+fix: add proper DE/FR amino acid names (nameDe/nameFr) and replace all ternaries with getAAName() helper
