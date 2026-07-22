@@ -216,7 +216,7 @@ class AADobbleGame {
     
     // Generate fresh deck
     const settingsGuaranteeDiff = document.getElementById("set-guarantee-diff-reps").checked;
-    this.deck = generateDobbleDeck(AMINO_ACIDS, settingsGuaranteeDiff);
+    this.deck = generateDobbleDeck(AMINO_ACIDS, settingsGuaranteeDiff, [0, 2, 3, 4, 5]);
     
     // Draw playing UI
     this.container.innerHTML = `

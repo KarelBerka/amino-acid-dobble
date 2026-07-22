@@ -126,7 +126,7 @@ const REPRESENTATION_TYPES = {
  *                  - id: number (0..20)
  *                  - items: Array of 5 objects: { aminoAcid, repType }
  */
-function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true, allowedReps = [0, 1, 2, 3, 4, 5, 6]) {
+function generateDobbleDeck(aminoAcids, guaranteeDifferentReps = true, allowedReps = [0, 2, 3, 4, 5]) {
   const rawCards = generatePG2_4();
   
   if (!verifyDeck(rawCards)) {
