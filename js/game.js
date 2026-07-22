@@ -317,8 +317,10 @@ class AADobbleGame {
    * Language EN: 0 = English Name, 1 = Condensed Formula
    */
   buildCardHTML(cardData) {
-    const isSquare = document.getElementById("set-card-shape").value === "square";
-    const rotateEnabled = document.getElementById("set-random-rotation").checked;
+    const shapeElem = document.getElementById("set-card-shape");
+    const isSquare = shapeElem ? shapeElem.value === "square" : true;
+    const rotateElem = document.getElementById("set-random-rotation");
+    const rotateEnabled = rotateElem ? rotateElem.checked : false;
     const lang = window.currentLang || "cs";
     
     let itemsHTML = "";
