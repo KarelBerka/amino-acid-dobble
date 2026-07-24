@@ -2,17 +2,62 @@
 
 // Global state for active language
 const _VALID_LANGS = ["cs", "en", "de", "fr"];
-// URL ?lang= param takes top priority (used by /cz, /en, /de, /fr stub redirects)
-const _urlLang = new URLSearchParams(window.location.search).get("lang");
-const _storedLang = localStorage.getItem("aa_dobble_lang");
-const _resolvedLang = _VALID_LANGS.includes(_urlLang) ? _urlLang : (_VALID_LANGS.includes(_storedLang) ? _storedLang : "cs");
-if (_urlLang && _resolvedLang) {
-  // Persist the URL-specified language and clean the URL
-  localStorage.setItem("aa_dobble_lang", _resolvedLang);
-  const cleanUrl = window.location.pathname;
-  window.history.replaceState({}, "", cleanUrl);
+
+function getLanguageFromURL() {
+  const hashRaw = window.location.hash || "";
+  if (hashRaw) {
+    let hashClean = hashRaw.replace(/^#\/?/, '').split('?')[0].split('/')[0].trim().toLowerCase();
+    if (hashClean.startsWith("lang=")) {
+      hashClean = hashClean.replace("lang=", "");
+    }
+    if (hashClean === "cz") hashClean = "cs";
+    if (_VALID_LANGS.includes(hashClean)) {
+      return hashClean;
+    }
+  }
+
+  const searchParams = new URLSearchParams(window.location.search);
+  let urlLang = searchParams.get("lang");
+  if (!urlLang) {
+    for (const lang of ["cs", "cz", "en", "de", "fr"]) {
+      if (searchParams.has(lang)) {
+        urlLang = lang;
+        break;
+      }
+    }
+  }
+  if (urlLang) {
+    urlLang = urlLang.trim().toLowerCase();
+    if (urlLang === "cz") urlLang = "cs";
+    if (_VALID_LANGS.includes(urlLang)) {
+      return urlLang;
+    }
+  }
+
+  const path = window.location.pathname.toLowerCase();
+  for (const lang of ["en", "de", "fr", "cs", "cz"]) {
+    if (path.includes("/" + lang + "/") || path.endsWith("/" + lang)) {
+      return lang === "cz" ? "cs" : lang;
+    }
+  }
+
+  return null;
 }
-window.currentLang = _resolvedLang;
+
+function resolveInitialLanguage(storageKey) {
+  const urlLang = getLanguageFromURL();
+  if (urlLang) {
+    localStorage.setItem(storageKey, urlLang);
+    return urlLang;
+  }
+  const storedLang = localStorage.getItem(storageKey);
+  if (storedLang && _VALID_LANGS.includes(storedLang)) {
+    return storedLang;
+  }
+  return "cs";
+}
+
+window.currentLang = resolveInitialLanguage("aa_dobble_lang");
 
 // Translation dictionary for DOM elements
 const TRANSLATIONS = {
@@ -277,44 +322,56 @@ function updateThemeIcon(theme) {
 }
 
 /* --- Localization Management --- */
+function applyLanguageChange(newLang) {
+  if (!_VALID_LANGS.includes(newLang)) return;
+  window.currentLang = newLang;
+  localStorage.setItem("aa_dobble_lang", window.currentLang);
+  document.documentElement.setAttribute("lang", window.currentLang);
+
+  const langToggle = document.getElementById("lang-toggle");
+  if (langToggle) langToggle.value = window.currentLang;
+
+  translatePage();
+
+  const searchInput = document.getElementById("ref-search");
+  const activeFilterBtn = document.querySelector("#ref-filters .filter-btn.active");
+  if (searchInput && activeFilterBtn) {
+    const activeFilter = activeFilterBtn.getAttribute("data-filter");
+    renderEncyclopedia(activeFilter, searchInput.value.toLowerCase().trim());
+  }
+
+  if (document.getElementById("generator-tab") && document.getElementById("generator-tab").classList.contains("active")) {
+    renderGeneratorPreview(false);
+  }
+
+  if (activeGameInstance) {
+    if (activeGameInstance.gameState !== "playing") {
+      activeGameInstance.renderStartScreen();
+    } else {
+      activeGameInstance.updateLang();
+    }
+  }
+
+  renderHeroCards();
+}
+
 function initLanguage() {
   const langToggle = document.getElementById("lang-toggle");
 
-  // Restore saved language
-  langToggle.value = window.currentLang;
+  if (langToggle) {
+    langToggle.value = window.currentLang;
+    langToggle.addEventListener("change", () => {
+      applyLanguageChange(langToggle.value);
+    });
+  }
+
   translatePage();
 
-  langToggle.addEventListener("change", () => {
-    window.currentLang = langToggle.value;
-    localStorage.setItem("aa_dobble_lang", window.currentLang);
-    
-    // Update html lang attribute for accessibility / SEO
-    document.documentElement.setAttribute("lang", window.currentLang);
-
-    // Update translations
-    translatePage();
-
-    // Refresh Encyclopedia and Generator if active
-    const searchInput = document.getElementById("ref-search");
-    const activeFilter = document.querySelector("#ref-filters .filter-btn.active").getAttribute("data-filter");
-    renderEncyclopedia(activeFilter, searchInput.value.toLowerCase().trim());
-
-    if (document.getElementById("generator-tab").classList.contains("active")) {
-      renderGeneratorPreview(false); // redraw visually
+  window.addEventListener("hashchange", () => {
+    const urlLang = getLanguageFromURL();
+    if (urlLang && urlLang !== window.currentLang) {
+      applyLanguageChange(urlLang);
     }
-
-    // Update active game start screen or state
-    if (activeGameInstance) {
-      if (activeGameInstance.gameState !== "playing") {
-        activeGameInstance.renderStartScreen();
-      } else {
-        // Redraw current cards in active game to update language texts immediately without skipping round
-        activeGameInstance.updateLang();
-      }
-    }
-
-    // Redraw hero showcase
-    renderHeroCards();
   });
 }
 
